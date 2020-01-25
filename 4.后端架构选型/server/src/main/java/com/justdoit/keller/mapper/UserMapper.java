@@ -16,7 +16,8 @@ public interface UserMapper {
      * 并将该查询语句的结果映射为 List<UserInfo> 对象
      * @return List<UserInfo>
      */
-    @Select("select * from user_info")
+    @Select("select id, type, email, password, createTime, status, isDelete, updateTime, updateUserId " +
+            "from user_info")
     List<UserInfo> selectAll();
 
 }
