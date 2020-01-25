@@ -50,7 +50,7 @@ public class BaseUpdateProvider {
         Class cls = entity.getClass();
         StringBuilder builder = new StringBuilder();
         builder.append("UPDATE ").append(SqlFieldReader.getTableName(entity)).append(" SET ");
-        List<String> fields = SqlFieldReader.getFields(cls);
+        List<String> fields = SqlFieldReader.getFields(entity);
         try{
             for(String field:fields){
                 if(SqlFieldReader.hasValue(entity,field)){

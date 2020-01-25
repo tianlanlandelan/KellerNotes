@@ -1,7 +1,7 @@
 package com.justdoit.keller.entity;
 
-import com.justdoit.keller.mybatis.BaseEntity;
-import com.justdoit.keller.mybatis.annotation.*;
+import com.justdoit.keller.common.mybatis.BaseEntity;
+import com.justdoit.keller.common.mybatis.annotation.*;
 
 import java.util.Date;
 

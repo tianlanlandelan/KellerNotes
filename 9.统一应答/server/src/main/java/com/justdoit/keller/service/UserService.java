@@ -2,7 +2,7 @@ package com.justdoit.keller.service;
 
 import com.justdoit.keller.entity.UserInfo;
 import com.justdoit.keller.mapper.UserMapper;
-import com.justdoit.keller.response.ResultData;
+import com.justdoit.keller.common.response.ResultData;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

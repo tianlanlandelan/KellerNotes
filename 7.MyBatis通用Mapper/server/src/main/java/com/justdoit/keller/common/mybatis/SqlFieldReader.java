@@ -50,7 +50,17 @@ public class SqlFieldReader {
         for(Field field:fields){
             allFields.append(field.getName()).append(",");
             if(field.getAnnotation(FieldAttribute.class) != null){
-                builder.append(field.getName()).append(",");
+                FieldAttribute fieldAttribute = field.getAnnotation(FieldAttribute.class);
+                //如果查询明细字段，返回明细字段
+                if(entity.isBaseKyleDetailed()){
+                    builder.append(field.getName()).append(",");
+                    //如果不查询明细字段，不返回明细字段
+                }else {
+                    if(!fieldAttribute.detailed()){
+                        builder.append(field.getName()).append(",");
+                    }
+                }
+
             }
         }
         if(builder.length() > 0){
@@ -188,11 +198,10 @@ public class SqlFieldReader {
     /**
      * 获取所有字段列表
      * 读取类中带@FieldAttribute注解的字段，如果都没有带该注解，则返回类中所有字段
-     * @param cls 实体类型
      * @return {id,name}
      */
-    public static List<String> getFields(Class cls){
-        Field[] fields = cls.getDeclaredFields();
+    public static <T extends BaseEntity> List<String> getFields(T entity){
+        Field[] fields = entity.getClass().getDeclaredFields();
         List<String> fieldList = new ArrayList<>();
         List<String> allList = new ArrayList<>();
         //带@FieldAttribute注解的属性名

@@ -13,6 +13,31 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface FieldAttribute {
     /**
+     * 字段说明
+     * @return
+     */
+    String value() default "";
+
+    /**
+     * 是否必填字段，默认不是必填
+     * @return
+     */
+    boolean notNull() default false;
+
+    /**
+     * 字段长度 ，仅可变长类型设置
+     * String 、byte[] 类型分别对应 mysql 中 varchar、varbinary类型，需要设置长度，默认50
+     * @return
+     */
+    int length() default 0;
+
+    /**
+     * 是否唯一，默认不唯一
+     * @return
+     */
+    boolean unique() default false;
+
+    /**
      * 是否是明细字段，如果是明细字段，在查询列表时不显示该字段
      * @return
      */

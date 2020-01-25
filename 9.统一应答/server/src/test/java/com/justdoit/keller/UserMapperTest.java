@@ -2,8 +2,8 @@ package com.justdoit.keller;
 
 import com.justdoit.keller.entity.UserInfo;
 import com.justdoit.keller.mapper.UserMapper;
-import com.justdoit.keller.util.Console;
-import com.justdoit.keller.util.StringUtils;
+import com.justdoit.keller.common.util.Console;
+import com.justdoit.keller.common.util.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

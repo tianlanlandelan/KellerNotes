@@ -410,7 +410,7 @@ public class SqlFieldReader {
      * @param <T> 实体类型
      * @return 值存在且不为null:返回true; 否则:返回false
      */
-    public static <T extends BaseEntity> boolean hasValue(T entity,String fieldName){
+    public static <T extends BaseEntity> boolean hasValue(T entity, String fieldName){
         try {
             Class cls = entity.getClass();
             Method method = cls.getMethod("get" + StringUtils.captureName(fieldName));
