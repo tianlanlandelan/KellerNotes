@@ -1,6 +1,5 @@
 package com.justdoit.keller.common.mybatis;
 
-
 import com.justdoit.keller.common.mybatis.provider.*;
 import org.apache.ibatis.annotations.*;
 import org.springframework.dao.DuplicateKeyException;
@@ -16,17 +15,15 @@ import java.util.List;
  *
  * BaseMapper还提供了带条件的删除和查询操作，以及带条件的分页查询，需要实体类继承BaseEntity方可使用
  *
- * @param <K>
+ * @param <T>
  */
-public interface BaseMapper<K> {
-
+public interface BaseMapper<T extends BaseEntity> {
     /**
      * 创建表
      * @param entity
      */
     @UpdateProvider(type = BaseCreateProvider.class , method = "create")
-    <T extends BaseEntity> void baseCreate(T entity);
-
+    void baseCreate(T entity);
 
     /**
      * 插入操作
@@ -36,7 +33,7 @@ public interface BaseMapper<K> {
      * @throws DuplicateKeyException 当唯一字段重复插入时，会抛该异常
      */
     @InsertProvider(type = BaseInsertProvider.class,method = "insert")
-    <T extends BaseEntity> Integer baseInsert(T entity) throws DuplicateKeyException;
+    Integer baseInsert(T entity) throws DuplicateKeyException;
 
     /**
      * 插入数据并返回自增的主键(建议使用id)
@@ -47,7 +44,7 @@ public interface BaseMapper<K> {
      */
     @InsertProvider(type = BaseInsertProvider.class,method = "insertAndReturnKey")
     @Options(useGeneratedKeys=true,keyProperty = "id", keyColumn = "id")
-    <T extends BaseEntity> Integer baseInsertAndReturnKey(T entity) throws DuplicateKeyException;
+    Integer baseInsertAndReturnKey(T entity) throws DuplicateKeyException;
 
 
     /**
@@ -56,7 +53,7 @@ public interface BaseMapper<K> {
      * @return
      */
     @DeleteProvider(type = BaseDeleteProvider.class,method = "deleteById")
-    <T extends BaseEntity> Integer baseDeleteById(T entity);
+    Integer baseDeleteById(T entity);
 
     /**
      * 根据条件删除
@@ -66,7 +63,7 @@ public interface BaseMapper<K> {
      * @return DELETE FROM router  WHERE name = #{name} AND serviceName = #{serviceName}
      */
     @SelectProvider(type= BaseDeleteProvider.class,method = "deleteByCondition")
-    <T extends BaseEntity> Integer baseDeleteByCondition(T entity);
+    Integer baseDeleteByCondition(T entity);
 
     /**
      * 根据id 更新数据，空值不更新 ，要求必须有id字段
@@ -74,7 +71,7 @@ public interface BaseMapper<K> {
      * @return
      */
     @UpdateProvider(type = BaseUpdateProvider.class,method = "updateById")
-    <T extends BaseEntity> Integer baseUpdateById(T entity);
+    Integer baseUpdateById(T entity);
 
     /**
      * 根据主键更新数据，空值不更新，要求数据至少有一个主键，且主键有值
@@ -82,7 +79,7 @@ public interface BaseMapper<K> {
      * @return
      */
     @UpdateProvider(type = BaseUpdateProvider.class,method = "updateByKey")
-    <T extends BaseEntity> Integer baseUpdateByKey(T entity);
+    Integer baseUpdateByKey(T entity);
 
     /**
      * 根据Id 查找数据，要求必须有id 字段
@@ -90,7 +87,7 @@ public interface BaseMapper<K> {
      * @return
      */
     @SelectProvider(type= BaseSelectProvider.class,method = "selectById")
-    <T extends BaseEntity> K baseSelectById(T entity);
+    T baseSelectById(T entity);
 
     /**
      * 根据主键查询数据，要求至少有一个主键，且主键必须有值
@@ -98,7 +95,7 @@ public interface BaseMapper<K> {
      * @return
      */
     @SelectProvider(type= BaseSelectProvider.class,method = "selectByKey")
-    <T extends BaseEntity> K baseSelectByKey(T entity);
+    T baseSelectByKey(T entity);
 
 
 
@@ -108,7 +105,7 @@ public interface BaseMapper<K> {
      * @return
      */
     @SelectProvider(type= BaseSelectProvider.class,method = "selectAll")
-    <T extends BaseEntity> List<K> baseSelectAll(T entity);
+    List<T> baseSelectAll(T entity);
 
     /**
      * 带条件的查询，该查询为动态查询，不可缓存
@@ -120,7 +117,7 @@ public interface BaseMapper<K> {
      * @return SELECT id,name... FROM router  WHERE name = #{name} AND serviceName = #{serviceName}  ORDER BY createTime ASC
      */
     @SelectProvider(type= BaseSelectProvider.class,method = "selectByCondition")
-    <T extends BaseEntity> List<K> baseSelectByCondition(T entity);
+    List<T> baseSelectByCondition(T entity);
 
 
     /**
@@ -131,7 +128,7 @@ public interface BaseMapper<K> {
      * @return
      */
     @SelectProvider(type = BaseSelectProvider.class,method = "selectCount")
-    <T extends BaseEntity> Integer baseSelectCount(T entity);
+    Integer baseSelectCount(T entity);
 
     /**
      * 根据条件查询记录总数
@@ -140,7 +137,7 @@ public interface BaseMapper<K> {
      * @return SELECT COUNT(1) FROM router WHERE name = #{name} AND serviceName = #{serviceName}
      */
     @SelectProvider(type = BaseSelectProvider.class,method = "selectCountByCondition")
-    <T extends BaseEntity> Integer baseSelectCountByCondition(T entity);
+    Integer baseSelectCountByCondition(T entity);
 
 
     /**
@@ -151,7 +148,7 @@ public interface BaseMapper<K> {
      * @return
      */
     @SelectProvider(type = BaseSelectProvider.class,method = "selectPageList")
-    <T extends BaseEntity> List<K> baseSelectPageList(T entity);
+    List<T> baseSelectPageList(T entity);
 
     /**
      * 加条件的分页查询
@@ -159,6 +156,6 @@ public interface BaseMapper<K> {
      * @return SELECT id,name... FROM router  WHERE name = #{name} AND serviceName = #{serviceName}  ORDER BY createTime ASC LIMIT #{startRows},#{pageSize}
      */
     @SelectProvider(type = BaseSelectProvider.class,method = "selectPageListByCondition")
-    <T extends BaseEntity> List<K> baseSelectPageListByCondition(T entity);
+    List<T> baseSelectPageListByCondition(T entity);
 
 }
