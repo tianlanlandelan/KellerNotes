@@ -228,7 +228,7 @@ public class SqlFieldReader {
     /**
      * 读取@TableAttribute注解，解析表名和描述
      * 读取@FieldAttribute注解，解析字段名和描述
-     * 读取@KeyAttribute注解和@AutoIncrKeyAttribute注解，解析主键
+     * 读取@KeyAttribute注解，解析主键
      * 读取@IndexAttribute注解，解析索引
      *
      * 创建的数据表，含表名、数据表描述、字段名、字段描述、主键、自增主键、索引
@@ -310,10 +310,8 @@ public class SqlFieldReader {
         }
         builder.deleteCharAt(builder.lastIndexOf(","));
         return builder.toString();
-
-
-
     }
+
     private static <T extends BaseEntity> String getCreateKeySql(T entity){
         Field[] fields = entity.getClass().getDeclaredFields();
         StringBuilder builder = new StringBuilder();

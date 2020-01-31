@@ -20,8 +20,8 @@ public class TypeCaster {
     /**
      * TINYTEXT 	256 bytes
      * TEXT 	65,535 bytes 	~64kb
-     * MEDIUMTEXT 	 16,777,215 bytes 	~16MB
-     * LONGTEXT 	4,294,967,295 bytes 	~4GB
+     * MEDIUMTEXT 	 16,777,215 bytes 	~16Mb
+     * LONGTEXT 	4,294,967,295 bytes 	~4Gb
      */
     private static final int TEXT_MAX = 65535;
 
@@ -99,7 +99,7 @@ public class TypeCaster {
     }
 
     public static void main(String[] args){
-        Console.println("String",getType("String",100));
+        Console.println("String",getType("String",10000));
         Console.println("Integer",getType("Integer",100));
         Console.println("float",getType("float",100));
         Console.println("Float",getType("Float",10));

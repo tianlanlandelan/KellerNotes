@@ -16,4 +16,9 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface KeyAttribute {
+    /**
+     * 是否是自增主键
+     * @return
+     */
+    boolean autoIncr() default false;
 }
