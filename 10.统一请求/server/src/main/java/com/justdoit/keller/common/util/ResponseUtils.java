@@ -31,7 +31,6 @@ public class ResponseUtils {
                     response = ResponseEntity.status(errorException.getStatusCode()).contentType(MediaType.APPLICATION_JSON).body(resultData);
                 }
             }
-
         }else {
             response = Response.badRequest();
         }

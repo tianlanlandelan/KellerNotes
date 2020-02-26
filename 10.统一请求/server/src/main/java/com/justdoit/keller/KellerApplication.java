@@ -19,9 +19,7 @@ public class KellerApplication {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().clear();
         restTemplate.getMessageConverters().add(new FastJsonHttpMessageConverter());
-
         return restTemplate;
-
     }
     public static void main(String[] args) {
         SpringApplication.run(KellerApplication.class, args);

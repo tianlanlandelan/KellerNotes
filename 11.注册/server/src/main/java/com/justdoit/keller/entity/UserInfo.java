@@ -11,7 +11,7 @@ import java.util.Date;
  */
 @TableAttribute(name = "user_info",comment = "用户信息表")
 public class UserInfo   extends BaseEntity {
-    @AutoIncrKeyAttribute
+    @KeyAttribute(autoIncr = true)
     @FieldAttribute
     private int id;
 

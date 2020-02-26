@@ -10,6 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Provider工具类
@@ -19,18 +20,24 @@ import java.util.List;
  */
 public class SqlFieldReader {
 
-
+    public static ConcurrentHashMap<String,String> tableNameMap = new ConcurrentHashMap<>(16);
 
     /**
      * 读取表名，要求类上有@TableAttribute注解
      * @param entity 实体对象
      * @return tableName
      */
-    public static <T extends BaseEntity> String getTableName(T entity){
+    public static <T extends BaseEntity> String getTableName(T entity) {
+        Class cls = entity.getClass();
+        String tableName = tableNameMap.get(cls.getName());
+        if(StringUtils.isNotEmpty(tableName)){
+            return tableName;
+        }
         TableAttribute table = entity.getClass().getAnnotation(TableAttribute.class);
         if(table == null){
-            return null;
+            throw new BaseException("需要解析表名，但未找到@TableAttribute注解");
         }
+        tableNameMap.put(cls.getName(),table.name());
         return table.name();
     }
 
@@ -128,7 +135,7 @@ public class SqlFieldReader {
      * @param <T>
      * @return WHERE userId = #{userId}
      */
-    public static <T> String getConditionByKeySuffix(T entity) throws BaseException {
+    public static <T extends BaseEntity> String getConditionByKeySuffix(T entity) throws BaseException {
         Class cls = entity.getClass();
         Field[] fields = cls.getDeclaredFields();
         StringBuilder builder = new StringBuilder();
@@ -199,11 +206,10 @@ public class SqlFieldReader {
     /**
      * 获取所有字段列表
      * 读取类中带@FieldAttribute注解的字段，如果都没有带该注解，则返回类中所有字段
-     * @param cls 实体类型
      * @return {id,name}
      */
-    public static List<String> getFields(Class cls){
-        Field[] fields = cls.getDeclaredFields();
+    public static <T extends BaseEntity> List<String> getFields(T entity){
+        Field[] fields = entity.getClass().getDeclaredFields();
         List<String> fieldList = new ArrayList<>();
         List<String> allList = new ArrayList<>();
         //带@FieldAttribute注解的属性名
@@ -222,7 +228,7 @@ public class SqlFieldReader {
     /**
      * 读取@TableAttribute注解，解析表名和描述
      * 读取@FieldAttribute注解，解析字段名和描述
-     * 读取@KeyAttribute注解和@AutoIncrKeyAttribute注解，解析主键
+     * 读取@KeyAttribute注解，解析主键
      * 读取@IndexAttribute注解，解析索引
      *
      * 创建的数据表，含表名、数据表描述、字段名、字段描述、主键、自增主键、索引
@@ -230,10 +236,9 @@ public class SqlFieldReader {
      * @return
      */
     public static <T extends BaseEntity> String getCreateTableSql(T entity){
-        Class cls = entity.getClass();
         TableAttribute table =  entity.getClass().getAnnotation(TableAttribute.class);
         if(table == null){
-            return null;
+            throw new BaseException("要解析表名，未发现@TableAttribute注解");
         }
         String tableName = table.name();
         String tableComment = table.comment();
@@ -247,31 +252,9 @@ public class SqlFieldReader {
                 .append(tableName)
                 .append("( \n");
 
-        List<SqlField> fieldList = getFieldAnnotationList(cls);
-        /*
-        解析字段描述：是否唯一、是否必填、是否设置了最大长度等
-         */
-        for(SqlField field : fieldList){
-            builder.append(field.getName())
-                    .append(" ")
-                    .append(TypeCaster.getType(field.getType(),field.getLength()));
-            if(field.isNotNull()){
-                builder.append(" not null ");
-            }
 
-            if(field.isUnique()){
-                builder.append(" unique ");
-            }
-
-            //如果有字段说明，添加字段说明
-            if(StringUtils.isNotEmpty(field.getComment())) {
-               builder.append(" comment '")
-                       .append(field.getComment())
-                       .append("'");
-            }
-            builder.append(", \n");
-        }
-        builder.deleteCharAt(builder.lastIndexOf(","));
+        // 添加字段
+        builder.append(getAddFieldSql(entity));
         builder.append(") ");
 
         // 如果有表说明，添加表说明
@@ -283,131 +266,111 @@ public class SqlFieldReader {
             builder.append("; \n");
         }
 
+        //添加主键
+        builder.append(getCreateKeySql(entity));
 
-        // 设置主键
-        SqlField key = SqlFieldReader.getKey(cls);
-        SqlField autoIncrKey = SqlFieldReader.getAutoIncrKey(cls);
+        //添加索引
+        builder.append(getCreateIndexSql(entity));
 
-        if(key != null && autoIncrKey != null){
-            builder .append("alter table ")
-                    .append(tableName)
-                    .append(" change ")
-                    .append(autoIncrKey.getName())
-                    .append(" ")
-                    .append(autoIncrKey.getName())
-                    .append(" ")
-                    .append(TypeCaster.getType(autoIncrKey.getType(),autoIncrKey.getLength()))
-                    .append(" auto_increment primary key ; \n");
-        }else if(key != null){
-            builder.append("alter table ")
-                    .append(tableName)
-                    .append(" add primary key (")
-                    .append(key.getName())
-                    .append("); \n");
-        }
-
-        //设置索引
-        List<SqlField> indexMap = SqlFieldReader.getIndexList(cls);
-        for(SqlField field:indexMap){
-            builder.append("alter table ")
-                    .append(tableName)
-                    .append(" add index ")
-                    .append(tableName)
-                    .append("_index_")
-                    .append(field.getName())
-                    .append(" (")
-                    .append(field.getName())
-                    .append("); \n");
-        }
         Console.print("",builder.toString());
         return builder.toString();
     }
 
 
-    /**
-     *
-     * @param cls           实体类 Class
-     * @param annotation    注解 Class
-     * @return
-     */
-    public static List<SqlField> getAnnotationList(Class cls, Class annotation){
-        Field[] fields = cls.getDeclaredFields();
-        List<SqlField> list = new ArrayList<>();
-        for(Field field:fields){
-            if(annotation != null && field.getAnnotation(annotation) != null){
-                list.add(new SqlField(field.getName(), field.getType().getSimpleName()));
-            }
-        }
-        return list;
-    }
+    public static <T extends BaseEntity> String getAddFieldSql(T entity){
+        Field[] fields = entity.getClass().getDeclaredFields();
+        StringBuilder builder = new StringBuilder();
 
-    /**
-     * 获取字段列表
-     * @param cls
-     * @return
-     */
-    public static List<SqlField> getFieldAnnotationList(Class cls){
-        Field[] fields = cls.getDeclaredFields();
-        List<SqlField> list = new ArrayList<>();
-
+        /*
+        解析字段描述：是否唯一、是否必填、是否设置了最大长度等
+         */
         for(Field field:fields){
             FieldAttribute fieldAttribute = field.getAnnotation(FieldAttribute.class);
             if(fieldAttribute != null){
-                SqlField sqlField = new SqlField(field.getName(),field.getType().getSimpleName());
-                sqlField.setComment(fieldAttribute.value());
-                sqlField.setNotNull(fieldAttribute.notNull());
-                sqlField.setLength(fieldAttribute.length());
-                sqlField.setUnique(fieldAttribute.unique());
-                list.add(sqlField);
+
+                builder.append(field.getName())
+                        .append(" ")
+                        .append(TypeCaster.getType(field.getType().getSimpleName(),fieldAttribute.length()));
+                if(fieldAttribute.notNull()){
+                    builder.append(" not null ");
+                }
+
+                if(fieldAttribute.unique()){
+                    builder.append(" unique ");
+                }
+
+                //如果有字段说明，添加字段说明
+                if(StringUtils.isNotEmpty(fieldAttribute.value())) {
+                    builder.append(" comment '")
+                            .append(fieldAttribute.value())
+                            .append("'");
+                }
+                builder.append(", \n");
             }
         }
-        return list;
+        builder.deleteCharAt(builder.lastIndexOf(","));
+        return builder.toString();
     }
+
+    private static <T extends BaseEntity> String getCreateKeySql(T entity){
+        Field[] fields = entity.getClass().getDeclaredFields();
+        StringBuilder builder = new StringBuilder();
+        for(Field field:fields){
+            KeyAttribute keyAttribute = field.getAnnotation(KeyAttribute.class);
+            if(keyAttribute != null){
+                FieldAttribute fieldAttribute = field.getAnnotation(FieldAttribute.class);
+                if(fieldAttribute == null){
+                    return "";
+                }
+                builder .append("alter table ")
+                        .append(getTableName(entity))
+                        .append(" change ")
+                        .append(field.getName())
+                        .append(" ")
+                        .append(field.getName())
+                        .append(" ")
+                        .append(TypeCaster.getType(field.getType().getSimpleName(),fieldAttribute.length()));
+                if(keyAttribute.autoIncr()){
+                    builder.append(" auto_increment ");
+                }
+                builder.append(" primary key comment '")
+                        .append(fieldAttribute.value())
+                        .append("'; \n");
+
+                break;
+            }
+        }
+        return builder.toString();
+    }
+
 
     /**
      * 获取索引字段列表
-     * @param cls
      * @return
      */
-    public static List<SqlField> getIndexList(Class cls){
-        return getAnnotationList(cls,IndexAttribute.class);
-    }
+    public static <T extends BaseEntity> String getCreateIndexSql(T entity){
 
-    /**
-     * 获取主键，默认id字段是主键
-     * 如果没有设置主键时，将id字段设为主键
-     * 如果设置了多个主键，只取第一个
-     * @param cls
-     * @return
-     */
-    public static SqlField getKey(Class cls){
-        List<SqlField> list = getAnnotationList(cls,KeyAttribute.class);
-        if(list.size() == 0){
-            Field[] fields = cls.getDeclaredFields();
-            for(Field field:fields){
-                if("id".equals(field.getName())){
-                    return new SqlField(field.getName(),field.getType().getSimpleName());
-                }
+        String tableName = getTableName(entity);
+        StringBuilder builder = new StringBuilder();
+
+        Field[] fields = entity.getClass().getDeclaredFields();
+        for(Field field:fields){
+            if(field.getAnnotation(IndexAttribute.class) != null){
+
+                builder.append("alter table ")
+                        .append(tableName)
+                        .append(" add index ")
+                        .append(tableName)
+                        .append("_index_")
+                        .append(field.getName())
+                        .append(" (")
+                        .append(field.getName())
+                        .append("); \n");
             }
-        }else {
-            return list.get(0);
         }
-        return null;
+        return builder.toString();
     }
 
-    /**
-     * 获取自增主键
-     * @param cls
-     * @return
-     */
-    public static SqlField getAutoIncrKey(Class cls){
-        List<SqlField> list = getAnnotationList(cls,AutoIncrKeyAttribute.class);
-        if(list.size() == 0){
-            return null;
-        }else {
-            return list.get(0);
-        }
-    }
 
     /**
      * 判断一个对象的指定字段有没有值
@@ -416,7 +379,7 @@ public class SqlFieldReader {
      * @param <T> 实体类型
      * @return 值存在且不为null:返回true; 否则:返回false
      */
-    public static <T> boolean hasValue(T entity,String fieldName){
+    public static <T extends BaseEntity> boolean hasValue(T entity, String fieldName){
         try {
             Class cls = entity.getClass();
             Method method = cls.getMethod("get" + StringUtils.captureName(fieldName));

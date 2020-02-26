@@ -21,7 +21,6 @@ public class UserController {
     @GetMapping
     public ResponseEntity getAll(){
         List<UserInfo> list = userService.getAll();
-
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(list);
