@@ -114,7 +114,7 @@ public class SendEmailUtils {
      * @return 邮件实体类EmailEntity
      */
     public static EmailLog sendVCode(int type, String email){
-        String code = StringUtils.getNumbserString(LENGTH);
+        String code = StringUtils.getNumberString(LENGTH);
         EmailLog entity = new EmailLog();
         entity.setEmail(email);
         entity.setType(type);

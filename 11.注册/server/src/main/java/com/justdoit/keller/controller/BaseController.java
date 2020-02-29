@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.Map;
 
 /**
  * 不需要登录就能调用的接口
@@ -31,7 +30,7 @@ public class BaseController {
 //        String password = params.get("password");
 //        String code = params.get("code");
 //        int type = Integer.parseInt(params.get("type"));
-        if(StringUtils.isEmpty(email,password,code)){
+        if(StringUtils.isEmpty(password,code) || StringUtils.notEmail(email)){
             return Response.badRequest();
         }
         UserInfo userInfo = new UserInfo();
@@ -44,7 +43,7 @@ public class BaseController {
 
     @GetMapping("/check")
     public ResponseEntity check(int type,String email){
-        if(type < 0 || StringUtils.isEmpty(email)){
+        if(type < 0 || StringUtils.notEmail(email)){
             return Response.badRequest();
         }
         return Response.ok(userService.checkRegister(type,email));
@@ -58,7 +57,7 @@ public class BaseController {
      */
     @GetMapping("/getCode")
     public ResponseEntity getCode(int type,String email){
-        if(type < 0 || StringUtils.isEmpty(email)){
+        if(type < 0 || StringUtils.notEmail(email)){
             return Response.badRequest();
         }
         return Response.ok(userService.sendRegisterCode(type,email));
