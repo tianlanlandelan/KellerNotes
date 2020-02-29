@@ -1,10 +1,9 @@
 package com.justdoit.keller.common.util;
 
-import com.justdoit.keller.common.config.CommonConfig;
+import com.justdoit.keller.common.config.PublicConstant;
 import com.justdoit.keller.common.config.RequestConfig;
 import org.springframework.http.ResponseEntity;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,9 +14,6 @@ import java.util.Map;
  * @date 2019-10-11 16:19:26
  */
 public class RequestUtil {
-
-    public static String port;
-    public static String address;
 
     /**
      * 记录请求成功的日志（使用json提交参数的请求）
@@ -122,8 +118,8 @@ public class RequestUtil {
         StringBuilder builder = new StringBuilder();
 
         builder
-                .append(address).append(":")
-                .append(port).append("/")
+                .append(PublicConstant.address).append(":")
+                .append(PublicConstant.port).append("/")
                 .append(headers.get(RequestConfig.METHOD));
         if(params == null){
             return builder.toString();

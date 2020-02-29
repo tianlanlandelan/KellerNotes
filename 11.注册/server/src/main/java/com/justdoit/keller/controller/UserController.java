@@ -23,12 +23,4 @@ public class UserController {
         return Response.ok(resultData);
     }
 
-    @GetMapping("/getByEmail")
-    public ResponseEntity getByEmail(String email){
-        if(StringUtils.isEmpty(email)){
-            return Response.badRequest();
-        }
-        ResultData resultData = userService.getByEmail(email);
-        return Response.ok(resultData);
-    }
 }
