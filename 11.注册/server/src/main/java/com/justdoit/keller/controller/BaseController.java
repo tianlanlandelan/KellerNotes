@@ -41,21 +41,13 @@ public class BaseController {
         return Response.ok(userService.register(userInfo,code));
     }
 
-    @GetMapping("/check")
-    public ResponseEntity check(int type,String email){
-        if(type < 0 || StringUtils.notEmail(email)){
-            return Response.badRequest();
-        }
-        return Response.ok(userService.checkRegister(type,email));
-    }
-
     /**
      * 获取验证码
      * @param type
      * @param email
      * @return
      */
-    @GetMapping("/getCode")
+    @GetMapping("/getCodeForRegister")
     public ResponseEntity getCode(int type,String email){
         if(type < 0 || StringUtils.notEmail(email)){
             return Response.badRequest();

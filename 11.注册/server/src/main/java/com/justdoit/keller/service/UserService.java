@@ -28,6 +28,7 @@ public class UserService {
      * @return
      */
     public ResultData sendRegisterCode(int type,String email){
+
         UserInfo userInfo = getByEmailAndType(type,email);
         if(userInfo != null){
             return ResultData.error("该邮箱已被注册");
@@ -62,14 +63,6 @@ public class UserService {
         return ResultData.success(list);
     }
 
-    public ResultData checkRegister(int type,String email){
-        UserInfo userInfo = getByEmailAndType(type,email);
-        if(userInfo == null){
-            return ResultData.success();
-        }
-        return ResultData.error("用户已存在");
-    }
-
     /**
      * 根据类型和邮箱查询用户
      * @param type
@@ -87,7 +80,6 @@ public class UserService {
         }
         return null;
     }
-
 
 
     private UserInfo insert(UserInfo userInfo){

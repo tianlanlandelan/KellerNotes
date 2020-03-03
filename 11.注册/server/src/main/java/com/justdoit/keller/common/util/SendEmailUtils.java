@@ -27,27 +27,21 @@ public class SendEmailUtils {
      */
     public static final String TITLE ="【From】" + PublicConstant.appName;
 
-    public static final int TIME = 5;
-
     /**
      * 邮件验证码正文内容
      */
     public static final String RegisterBody =
             "验证码:%1$s，用于账号： %2$s 注册，泄露有风险。"
-                    + TIME + "分钟内使用有效。";
+                    + PublicConstant.EMAIL_CODE_TIME + "分钟内使用有效。";
 
     public static final String LoginBody =
             "验证码:%1$s，用于账号： %2$s 登录，泄露有风险。"
-                    + TIME + "分钟内使用有效。";
+                    + PublicConstant.EMAIL_CODE_TIME + "分钟内使用有效。";
 
     public static final String ResetPasswordBody =
             "验证码:%1$s，用于账号： %2$s 找回密码，泄露有风险。"
-                    + TIME + "分钟内使用有效。";
+                    + PublicConstant.EMAIL_CODE_TIME + "分钟内使用有效。";
 
-    /**
-     * 邮件验证码长度
-     */
-    public static final int LENGTH = 6;
 
     public static Session session= null;
 
@@ -83,7 +77,7 @@ public class SendEmailUtils {
      * @param content 邮件内容
      * @throws Exception
      */
-    public static void sendSimpleMail(String toEmailAddress,String title,String content)
+    private static void sendSimpleMail(String toEmailAddress,String title,String content)
             throws Exception {
         Session session = initSession();
         //创建邮件对象
@@ -114,7 +108,7 @@ public class SendEmailUtils {
      * @return 邮件实体类EmailEntity
      */
     public static EmailLog sendVCode(int type, String email){
-        String code = StringUtils.getNumberString(LENGTH);
+        String code = StringUtils.getAllCharString(PublicConstant.EMAIL_CODE_LENGTH);
         EmailLog entity = new EmailLog();
         entity.setEmail(email);
         entity.setType(type);

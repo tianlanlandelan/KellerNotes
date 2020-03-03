@@ -17,30 +17,67 @@ public class PublicConstant {
     public static final int FAILED = 1;
 
     /**
-     * 注册
+     * 注册类型
      */
     public static final int REGISTER_TYPE = 0;
 
     /**
-     * 登录
+     * 登录类型
      */
     public static final int LOGIN_TYPE = 1;
 
     /**
-     * 重置密码
+     * 重置密码类型
      */
     public static final int RESET_PASSWORD_TYPE = 2;
 
+    /**
+     * 邮件验证码有效期
+     */
+    public static final int EMAIL_CODE_TIME = 5;
 
+    /**
+     * 邮件验证码长度
+     */
+    public static final int EMAIL_CODE_LENGTH = 6;
+
+
+    /**
+     * 应用启动的端口号
+     */
     public static String port ;
+
+    /**
+     * 应用运行的 IP 地址
+     */
     public static String address ;
+
+
+    /**
+     * 应用名
+     */
     public static String appName ;
+
+    /**
+     * 服务器访问地址
+     */
     public static String serviceUrl = "http://" + address + ":" + port;
 
+    /**
+     * 邮件服务器地址
+     */
     public static String mailServerHost;
 
+
+    /**
+     * 邮件服务器登录用户名
+     */
     public static String mailServerUser;
 
+
+    /**
+     * 邮件服务器登录密码
+     */
     public static String mailServerPassword;
 
     /**
