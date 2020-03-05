@@ -7,6 +7,8 @@ package com.justdoit.keller.common.config;
  */
 public class PublicConstant {
 
+    public static final int DEFAULT_USER_TYPE = 0;
+
     /**
      * 业务成功标示
      */

@@ -1,6 +1,8 @@
 package com.justdoit.keller.controller;
 
+import com.justdoit.keller.common.config.PublicConstant;
 import com.justdoit.keller.common.response.Response;
+import com.justdoit.keller.common.util.Console;
 import com.justdoit.keller.common.util.StringUtils;
 import com.justdoit.keller.entity.UserInfo;
 import com.justdoit.keller.service.UserService;
@@ -8,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 /**
  * 不需要登录就能调用的接口
@@ -25,33 +28,33 @@ public class BaseController {
      * 注册功能
      */
     @PostMapping("/register")
-    public ResponseEntity register(int type,String email,String password,String code){
-//        String email = params.get("email");
-//        String password = params.get("password");
-//        String code = params.get("code");
-//        int type = Integer.parseInt(params.get("type"));
+    public ResponseEntity register(@RequestBody Map<String,String> params){
+        Console.info("register",params);
+        String email = params.get("email");
+        String password = params.get("password");
+        String code = params.get("code");
         if(StringUtils.isEmpty(password,code) || StringUtils.notEmail(email)){
             return Response.badRequest();
         }
         UserInfo userInfo = new UserInfo();
         userInfo.setEmail(email);
         userInfo.setPassword(password);
-        userInfo.setType(type);
+        userInfo.setType(PublicConstant.DEFAULT_USER_TYPE);
 
         return Response.ok(userService.register(userInfo,code));
     }
 
     /**
      * 获取验证码
-     * @param type
      * @param email
      * @return
      */
     @GetMapping("/getCodeForRegister")
-    public ResponseEntity getCode(int type,String email){
-        if(type < 0 || StringUtils.notEmail(email)){
+    public ResponseEntity getCode(String email){
+        Console.info("getCodeForRegister",email);
+        if(StringUtils.notEmail(email)){
             return Response.badRequest();
         }
-        return Response.ok(userService.sendRegisterCode(type,email));
+        return Response.ok(userService.sendRegisterCode(PublicConstant.DEFAULT_USER_TYPE,email));
     }
 }
