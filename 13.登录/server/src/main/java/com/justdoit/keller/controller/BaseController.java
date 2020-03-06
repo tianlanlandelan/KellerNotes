@@ -25,6 +25,39 @@ public class BaseController {
     private UserService userService;
 
     /**
+     * 获取注册验证码
+     * @param email
+     * @return
+     */
+    @GetMapping("/getCodeForRegister")
+    public ResponseEntity getCodeForRegister(String email){
+        Console.info("getCodeForRegister",email);
+        if(StringUtils.notEmail(email)){
+            return Response.badRequest();
+        }
+        return Response.ok(userService.sendEmailCode(
+                PublicConstant.DEFAULT_USER_TYPE,PublicConstant.REGISTER_TYPE,email));
+    }
+
+    /**
+     * 发送登录验证码
+     * @param type
+     * @param email
+     * @return
+     */
+    @GetMapping("/getCodeForLogin")
+    public ResponseEntity getCodeForLogin(Integer type,String email){
+        Console.info("getCodeForLogin",email);
+
+        //验证邮箱和用户类型的合法性
+        if(StringUtils.notEmail(email) || PublicConstant.notUserType(type)){
+            return Response.badRequest();
+        }
+        return Response.ok(userService.sendEmailCode(
+                type,PublicConstant.LOGIN_TYPE,email));
+    }
+
+    /**
      * 注册功能
      */
     @PostMapping("/register")
@@ -45,16 +78,42 @@ public class BaseController {
     }
 
     /**
-     * 获取验证码
-     * @param email
+     * 账号密码登录
+     * @param params
      * @return
      */
-    @GetMapping("/getCodeForRegister")
-    public ResponseEntity getCode(String email){
-        Console.info("getCodeForRegister",email);
-        if(StringUtils.notEmail(email)){
+    @PostMapping("/login")
+    public ResponseEntity login(@RequestBody Map<String,String> params){
+        Console.info("login",params);
+        String email = params.get("email");
+        String password = params.get("password");
+        int type = Integer.parseInt(params.get("type"));
+        if(StringUtils.isEmpty(password) || StringUtils.notEmail(email)){
             return Response.badRequest();
         }
-        return Response.ok(userService.sendRegisterCode(PublicConstant.DEFAULT_USER_TYPE,email));
+        UserInfo userInfo = new UserInfo();
+        userInfo.setEmail(email);
+        userInfo.setPassword(password);
+        userInfo.setType(type);
+
+        return Response.ok(userService.login(userInfo));
+    }
+
+    /**
+     * 验证码登录
+     * @param params
+     * @return
+     */
+    @PostMapping("/loginWithCode")
+    public ResponseEntity loginWithCode(@RequestBody Map<String,String> params){
+        Console.info("login",params);
+        String email = params.get("email");
+        String code = params.get("code");
+        int type = Integer.parseInt(params.get("type"));
+        //校验参数
+        if(StringUtils.isEmpty(code) || StringUtils.notEmail(email) || PublicConstant.notUserType(type)){
+            return Response.badRequest();
+        }
+        return Response.ok(userService.loginWithCode(email,type,code));
     }
 }

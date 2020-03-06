@@ -7,7 +7,26 @@ package com.justdoit.keller.common.config;
  */
 public class PublicConstant {
 
+    /**
+     * 默认的用户类型，即普通用户类型
+     */
     public static final int DEFAULT_USER_TYPE = 0;
+
+    /**
+     * 管理员的用户类型
+     */
+    public static final int ADMIN_USER_TYPE = 100;
+
+    public static boolean notUserType(Integer userType){
+        return !isUserType(userType);
+    }
+
+    public static boolean isUserType(Integer userType){
+        if(userType == null){
+            return false;
+        }
+        return userType == DEFAULT_USER_TYPE || userType == ADMIN_USER_TYPE;
+    }
 
     /**
      * 业务成功标示
@@ -43,6 +62,15 @@ public class PublicConstant {
      */
     public static final int EMAIL_CODE_LENGTH = 6;
 
+    /**
+     * JWT 有效时间 12 小时
+     */
+    public static final long JWT_EXP_TIME = 12 * 60 * 60 * 1000;
+
+    /**
+     * JWT 签名
+     */
+    public static final String JWT_SIGN_KEY = "kellerNotes20241002";
 
     /**
      * 应用启动的端口号
@@ -101,6 +129,5 @@ public class PublicConstant {
      * 超级管理员可以访问
      */
     public static final int AUTHORITY_SUPPER_ADMIN = 1 << 3;
-
 
 }
