@@ -60,11 +60,12 @@ public class JwtUtils {
                 return null;
             }
             UserInfo userInfo = new UserInfo();
-            userInfo.setId(Integer.parseInt(claims.getId()));
+            userInfo.setId(id);
             userInfo.setEmail(claims.get(userNameKey,String.class));
             userInfo.setType(claims.get(userTypeKey,Integer.class));
             return userInfo;
         }catch (Exception e){
+            e.printStackTrace();
             Console.error("checkJwt","JWT 解析失败",jwtString,e.getMessage());
             return null;
         }
