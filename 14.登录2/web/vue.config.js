@@ -10,22 +10,22 @@ module.exports = {
 		hotOnly: false, //是否开启热更新
 		proxy: {
 			'/api': {
-				target: 'http://127.0.0.1:8080',
+				target: 'https://127.0.0.1',
 				changeOrigin: true,
 				secure: false
 			},
 			'/base': {
-				target: 'http://127.0.0.1:8080',
+				target: 'https://127.0.0.1',
 				changeOrigin: true,
 				secure: false
 			},
 			'/form': {
-				target: 'http://127.0.0.1:8080',
+				target: 'https://127.0.0.1',
 				changeOrigin: true,
 				secure: false
 			},
 			'/upload': {
-				target: 'http://127.0.0.1:8080',
+				target: 'https://127.0.0.1',
 				changeOrigin: true,
 				secure: false
 			}

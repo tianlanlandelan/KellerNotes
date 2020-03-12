@@ -22,8 +22,8 @@ public class CommonConfig {
     /**
      * 项目运行的IP地址
      */
-    @Value("${server.address:http://127.0.0.1}")
-    public String address;
+//    @Value("${server.address:http://127.0.0.1}")
+//    public String address;
 
     /**
      * 应用名

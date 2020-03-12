@@ -117,9 +117,9 @@ public class RequestUtil {
         HashMap<String,String> headers = getHeader(request);
         StringBuilder builder = new StringBuilder();
 
-        builder
-                .append(PublicConstant.address).append(":")
-                .append(PublicConstant.port).append("/")
+        builder.append(PublicConstant.serviceUrl).append("/")
+//                .append(PublicConstant.address).append(":")
+//                .append(PublicConstant.port).append("/")
                 .append(headers.get(RequestConfig.METHOD));
         if(params == null){
             return builder.toString();

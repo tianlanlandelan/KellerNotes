@@ -24,7 +24,7 @@ public class KellerRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         PublicConstant.port = config.port;
-        PublicConstant.address = config.address;
+        PublicConstant.serviceUrl = "https://127.0.0.1:" + config.port;
         PublicConstant.appName = config.appName;
         PublicConstant.mailServerHost = config.mailServerHost;
         PublicConstant.mailServerUser = config.mailServerUser;

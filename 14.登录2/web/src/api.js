@@ -34,11 +34,11 @@ export const req_register = (user) => {
  */
 export const req_logon = (user) => { 
     return axios.post(base + '/login', {
-        type:user.type,
-        name:user.email,
+        email:user.email,
 		password:user.password
     }).then(res => res.data).catch(err => err); 
 };
+
 
 
 /**

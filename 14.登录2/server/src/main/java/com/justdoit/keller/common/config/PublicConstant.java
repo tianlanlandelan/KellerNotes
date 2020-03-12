@@ -77,11 +77,6 @@ public class PublicConstant {
      */
     public static String port ;
 
-    /**
-     * 应用运行的 IP 地址
-     */
-    public static String address ;
-
 
     /**
      * 应用名
@@ -91,7 +86,7 @@ public class PublicConstant {
     /**
      * 服务器访问地址
      */
-    public static String serviceUrl = "http://" + address + ":" + port;
+    public static String serviceUrl;
 
     /**
      * 邮件服务器地址

@@ -20,6 +20,12 @@
 				</el-form-item>
 				<el-form-item style="width:100%;">
 					<el-button type="primary" style="width:100%;" :disabled="getCodeButtonDisabled" @click="handleGetCode">获取验证码</el-button>
+					<!-- 跳转到登录页面的按钮 -->
+					<el-row>
+						<el-col class="alignRight">
+							<el-button type="text" @click="handleGoLogin()">已有账号，直接登录</el-button>
+						</el-col>
+					</el-row>
 				</el-form-item>
 			</el-row>
 
@@ -42,41 +48,8 @@
 				</el-form-item>
 			</el-row>
 
-			<!-- 第三步，设置昵称和头像，完善个人信息-->
-			<el-row v-if="step == 2">
-				<el-form-item>
-					<span class="ColorCommon font-bold">设置昵称</span>
-					<span class="ColorDanger" v-show="!user.nameChecked"> (请输入昵称)</span>
-					<el-input type="text" v-model="user.nickName" placeholder="kyleBlog" @blur="user.checkUserName()"></el-input>
-				</el-form-item>
-				<el-form-item style="width:100%;">
-					<el-row>
-						<el-col :span="12">
-							<el-row>
-								<el-popover placement="bottom-start" width="600" trigger="click" :value="showIcon">
-									<el-row class="popover">
-										<el-col class="icon_col center" :span="4" v-for="i in 12" :key="i">
-											<img class="img" :src="'../../static/icon/' + i + '.png'" @click="handleSelectIcon(i)" />
-										</el-col>
-									</el-row>
-									<el-button slot="reference" type="primary" style="width:100%;" @click="handleSelect">Select an avatar</el-button>
-								</el-popover>
-							</el-row>
-							<el-row class="margin" v-show="showSelected">
-								<el-button type="primary" style="width:100%;" @click="handleSubmit" :disabled="!user.nameChecked || user.avatarId == 0">Complete
-									sign up</el-button>
-							</el-row>
-
-						</el-col>
-						<el-col class="center" :span="12" v-show="showSelected">
-							<img class="img" :src="'../../static/icon/' + user.avatarId + '.png'" />
-						</el-col>
-					</el-row>
-
-				</el-form-item>
-
-
-			</el-row>
+			<!-- 第三步，设置昵称和头像，完善个人信息  TODO-->
+			
 		</el-form>
 	</el-row>
 </template>
@@ -85,7 +58,6 @@
 	import {
 		req_getCodeForRegister,
 		req_register
-		// req_updateUserInfo
 	} from '../api';
 	import {
 		format
@@ -93,9 +65,8 @@
 	export default {
 		data() {
 			return {
+				//是否禁用获取验证码按钮
 				getCodeButtonDisabled: false,
-				showIcon: false,
-				showSelected: false,
 				//注册用户数据
 				user: {
 					email:null,
@@ -107,9 +78,7 @@
 				},
 				//注册界面步骤条当前步骤Index
 				stepsActive: 0,
-				step: 0,
-				dialogImageUrl: '',
-				dialogVisible: false,
+				step: 0
 			};
 		},
 		methods: {
@@ -177,10 +146,6 @@
 							this.$router.push({
 								path: "/Login"
 							});
-							
-							// 
-							// this.user.id = data;
-							// this.step++;
 						}
 					}).catch(response => {
 						let {
@@ -193,35 +158,8 @@
 					});
 				}
 			},
-			handleSelect() {
-				this.showIcon = true;
-			},
-			handleSelectIcon(i) {
-				this.showIcon = false;
-				this.showSelected = true;
-				this.user.avatarId = i;
-				window.log(i, this.showIcon);
-			},
-			handleSubmit() {
-				// req_updateUserInfo(this.user).then(response => {
-				// 	//解析接口应答的json串
-				// 	let {
-				// 		message,
-				// 		success
-				// 	} = response;
-				// 	// console.log("req_updateUserInfo success", data, message, success);
-				// 	//应答不成功，提示错误信息
-				// 	if (success !== 0) {
-				// 		this.$message({
-				// 			message: message,
-				// 			type: 'error'
-				// 		});
-				// 	} else {
-				// 		this.$router.push({
-				// 			path: this.path
-				// 		});
-				// 	}
-				// });
+			handleGoLogin(){
+				this.$router.push({ path: '/Login' });
 			}
 		},
 		mounted() {

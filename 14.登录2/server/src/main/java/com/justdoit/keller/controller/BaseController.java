@@ -87,15 +87,18 @@ public class BaseController {
         Console.info("login",params);
         String email = params.get("email");
         String password = params.get("password");
-        int type = Integer.parseInt(params.get("type"));
+        String type = params.get("type");
         if(StringUtils.isEmpty(password) || StringUtils.notEmail(email)){
             return Response.badRequest();
         }
         UserInfo userInfo = new UserInfo();
         userInfo.setEmail(email);
         userInfo.setPassword(password);
-        userInfo.setType(type);
-
+        if(StringUtils.isEmpty(type)){
+            userInfo.setType(PublicConstant.DEFAULT_USER_TYPE);
+        }else {
+            userInfo.setType(Integer.parseInt(type));
+        }
         return Response.ok(userService.login(userInfo));
     }
 
