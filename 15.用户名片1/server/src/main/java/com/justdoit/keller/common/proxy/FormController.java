@@ -27,8 +27,6 @@ public class FormController {
     @Autowired
     RestTemplate restTemplate;
 
-    // TODO 转发前校验JWT和用户权限
-
     /**
      * 表单形式的GET请求
      * @return

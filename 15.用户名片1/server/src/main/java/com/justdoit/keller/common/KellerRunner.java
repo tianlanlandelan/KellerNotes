@@ -29,5 +29,10 @@ public class KellerRunner implements ApplicationRunner {
         PublicConstant.mailServerHost = config.mailServerHost;
         PublicConstant.mailServerUser = config.mailServerUser;
         PublicConstant.mailServerPassword = config.mailServerPassword;
+
+        PublicConstant.nginxPath = config.nginxPath;
+        PublicConstant.nginxUrl = config.nginxUrl;
+        PublicConstant.imgPath = config.imgPath;
+        PublicConstant.thumPath = config.thumPath;
     }
 }

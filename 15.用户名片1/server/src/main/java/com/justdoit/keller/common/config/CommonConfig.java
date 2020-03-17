@@ -20,12 +20,6 @@ public class CommonConfig {
     public String port;
 
     /**
-     * 项目运行的IP地址
-     */
-//    @Value("${server.address:http://127.0.0.1}")
-//    public String address;
-
-    /**
      * 应用名
      */
     @Value(("${spring.application.name:KellerNote}"))
@@ -48,5 +42,16 @@ public class CommonConfig {
     public  String mailServerPassword;
 
 
+    @Value("${nginx.path}")
+    public String nginxPath;
+
+    @Value("${nginx.url}")
+    public String nginxUrl;
+
+    @Value("${img.path}")
+    public String imgPath;
+
+    @Value("${thum.path}")
+    public String thumPath;
 
 }

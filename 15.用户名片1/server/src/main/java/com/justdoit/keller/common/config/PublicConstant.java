@@ -105,6 +105,33 @@ public class PublicConstant {
      */
     public static String mailServerPassword;
 
+    public static String nginxPath;
+
+    public static String nginxUrl;
+
+    public static String imgPath;
+
+    public static String thumPath;
+
+    /**
+     * 缩略图前缀名
+     */
+    public static final String THUM_PREFIX = "thum";
+
+    /**
+     * 缩略图最大宽度
+     */
+    public static final int THUM_MAX_WIDTH = 120;
+
+    /**
+     * 缩略图最大高度
+     */
+    public static final int THUM_MAX_HEIGHT = 120;
+
+    public static final String USER_ID_KEY = "kellerUserId";
+
+    public static final String ADMIN_ID_KEY = "kellerAdminId";
+
     /**
      * 通用，不做访问权限设置
      */

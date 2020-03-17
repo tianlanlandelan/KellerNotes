@@ -91,15 +91,13 @@ public class BaseController {
         if(StringUtils.isEmpty(password) || StringUtils.notEmail(email)){
             return Response.badRequest();
         }
-        UserInfo userInfo = new UserInfo();
-        userInfo.setEmail(email);
-        userInfo.setPassword(password);
+        int userType;
         if(StringUtils.isEmpty(type)){
-            userInfo.setType(PublicConstant.DEFAULT_USER_TYPE);
+            userType = PublicConstant.DEFAULT_USER_TYPE;
         }else {
-            userInfo.setType(Integer.parseInt(type));
+            userType = Integer.parseInt(type);
         }
-        return Response.ok(userService.login(userInfo));
+        return Response.ok(userService.login(email,password,userType));
     }
 
     /**

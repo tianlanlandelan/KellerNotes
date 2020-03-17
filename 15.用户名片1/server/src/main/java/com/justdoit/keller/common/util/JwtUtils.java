@@ -71,4 +71,29 @@ public class JwtUtils {
         }
     }
 
+    /**
+     * 从JWT中获取到UserId
+     * @param jwtString
+     * @return
+     */
+    public static Integer getUserId(String jwtString){
+        try {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(PublicConstant.JWT_SIGN_KEY)
+                    .parseClaimsJws(jwtString)
+                    .getBody();
+            int id = Integer.parseInt(claims.getId());
+            String subject = claims.getSubject();
+            //校验应用名
+            if(!subject.equals(PublicConstant.appName)){
+                return null;
+            }
+            return id;
+        }catch (Exception e){
+            e.printStackTrace();
+            Console.error("checkJwt","JWT 解析失败",jwtString,e.getMessage());
+            return null;
+        }
+    }
+
 }

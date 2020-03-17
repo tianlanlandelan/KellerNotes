@@ -27,7 +27,6 @@ public class ApiController {
     @Autowired
     RestTemplate restTemplate;
 
-    // TODO 转发前校验JWT和用户权限
 
     /**
      * json 格式的GET请求
@@ -36,6 +35,8 @@ public class ApiController {
      */
     @GetMapping
     public ResponseEntity get(@RequestBody Map<String,String> params){
+
+
 
         ResponseEntity responseEntity;
         try {

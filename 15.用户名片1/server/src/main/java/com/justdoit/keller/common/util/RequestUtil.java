@@ -2,6 +2,7 @@ package com.justdoit.keller.common.util;
 
 import com.justdoit.keller.common.config.PublicConstant;
 import com.justdoit.keller.common.config.RequestConfig;
+import com.justdoit.keller.entity.UserInfo;
 import org.springframework.http.ResponseEntity;
 
 import javax.servlet.http.HttpServletRequest;
@@ -113,19 +114,32 @@ public class RequestUtil {
         }
         return paramMap;
     }
+
+    /**
+     * 根据请求参数获取到URL，会解析请求中的 JWT，并将解析出的 UserId 拼接在请求中
+     * @param params
+     * @param request
+     * @return
+     */
     public static String getUrl(Map<String,String> params,HttpServletRequest request){
+        //从 JWT 中解析出 UserId
+        Integer userId = JwtUtils.getUserId(request.getHeader(RequestConfig.TOKEN));
         HashMap<String,String> headers = getHeader(request);
         StringBuilder builder = new StringBuilder();
 
         builder.append(PublicConstant.serviceUrl).append("/")
-//                .append(PublicConstant.address).append(":")
-//                .append(PublicConstant.port).append("/")
                 .append(headers.get(RequestConfig.METHOD));
+        builder.append("?");
+        //请求参数中添加 userId
+        builder.append(PublicConstant.USER_ID_KEY).append("=").append(userId).append("&");
         if(params == null){
             return builder.toString();
         }
-        builder.append("?");
         for(String key :params.keySet()){
+            //过滤校请求中的 userId
+            if(PublicConstant.USER_ID_KEY.equals(key)){
+                continue;
+            }
             builder.append(key)
                     .append("={")
                     .append(key)

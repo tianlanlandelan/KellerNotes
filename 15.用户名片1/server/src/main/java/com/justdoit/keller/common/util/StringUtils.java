@@ -96,20 +96,43 @@ public class StringUtils {
 
     /**
      * 判断一系列字符串中是否有空的（包含:空字符串、null、纯空格字符）
+     * 只要有一个为空的，就返回 true
      * @param parameters 需要判断的字符串，可以是多个
      * @return
      */
     public static boolean isEmpty(String... parameters){
         for(String str:parameters){
-            if(str == null || str.isEmpty() || str.trim().isEmpty()){
+            if(str == null || str.trim().isEmpty()){
                 return true;
             }
         }
         return false;
     }
+
+    /**
+     * 判断一组字符串是否全部不为空
+     * @param parameters
+     * @return
+     */
     public static boolean isNotEmpty(String... parameters){
         return !isEmpty(parameters);
     }
+
+    /**
+     * 判断一组字符串是否有值
+     * 只要有一个字符串有值，就返回 true
+     * @param parameters
+     * @return
+     */
+    public static boolean hasValue(String ... parameters){
+        for(String str:parameters){
+            if(str != null && !str.trim().isEmpty()){
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     /**
      * 将字符串的首字母转大写

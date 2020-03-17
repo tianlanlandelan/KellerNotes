@@ -69,14 +69,16 @@ public class UserService {
 
     /**
      * 账号密码登录，登录成功后返回 JWT
-     * @param userInfo
+     * @param email
+     * @param password
+     * @param type
      * @return
      */
-    public ResultData login(UserInfo userInfo){
+    public ResultData login(String email,String password,int type){
         //指定查询条件
         UserInfo user = new UserInfo();
-        user.setEmail(userInfo.getEmail());
-        user.setType(userInfo.getType());
+        user.setEmail(email);
+        user.setType(type);
         user.setBaseKyleUseAnd(true);
 
         //查询用户
@@ -87,7 +89,7 @@ public class UserService {
         user = list.get(0);
 
         //校验密码
-        if(user.getPassword().equals(userInfo.getPassword())){
+        if(user.getPassword().equals(password)){
             //返回 JWT
             return ResultData.success(JwtUtils.getJwtString(user));
         }
