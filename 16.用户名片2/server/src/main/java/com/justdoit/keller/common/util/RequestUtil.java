@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 请求参数验证工具类
+ * 请求处理工具类，记录请求日志、解析请求参数等
  * @author yangkaile
  * @date 2019-10-11 16:19:26
  */

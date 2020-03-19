@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 
 /**
- *
+ * 应答解析工具类
  * @author yangkaile
  * @date 2019-10-28 14:16:07
  */

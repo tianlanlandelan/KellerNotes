@@ -1,7 +1,6 @@
 package com.justdoit.keller;
 
-import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
-import com.justdoit.keller.common.HttpsClientRequestFactory;
+import com.justdoit.keller.common.util.RestTemplateUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -17,11 +16,7 @@ public class KellerApplication {
      * 同时重新定义其解析时用到的字符集，防止中文乱码
      */
     RestTemplate restTemplate(){
-        RestTemplate restTemplate = new RestTemplate(new HttpsClientRequestFactory());
-        restTemplate.getMessageConverters().clear();
-        restTemplate.getMessageConverters().add(new FastJsonHttpMessageConverter());
-
-        return restTemplate;
+        return RestTemplateUtils.getHttpsTemplate();
 
     }
     public static void main(String[] args) {

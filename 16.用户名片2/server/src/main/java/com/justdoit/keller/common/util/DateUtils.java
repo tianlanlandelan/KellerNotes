@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
+ * 时间处理工具类，获取指定格式的日期字符串
  * @author yangkaile
  * @date 2019-05-30 08:55:13
  */

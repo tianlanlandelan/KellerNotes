@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
+ * 文件处理工具类，获取文件名、后缀名、保存文件等
  * @author yangkaile
  * @date 2019-05-30 09:10:12
  */

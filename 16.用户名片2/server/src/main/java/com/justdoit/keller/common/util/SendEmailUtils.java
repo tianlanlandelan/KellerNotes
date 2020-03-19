@@ -11,6 +11,7 @@ import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 /**
+ * 邮件发送工具类
  * SendEmailUtils.getSender(
  *  myConfig.mailServerHost,
  *  myConfig.mailServerUser,
