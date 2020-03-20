@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * 字符串处理工具类，生成随机数、格式校验、判断空字符串等
  * @author yangkaile
  * @date 2018-08-28 16:15:10
  */
