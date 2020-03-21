@@ -17,7 +17,8 @@ public class UserCardService {
     private UserCardMapper mapper;
 
     /**
-     * 设置用户名片，只设置有值的字段，当用户名片不存在时创建名片
+     * 设置用户名片，只设置有值的字段
+     * 用户名片时在注册时创建的，不能再次创建
      * @param userId
      * @param nickName
      * @param email
@@ -26,22 +27,13 @@ public class UserCardService {
      */
     public ResultData setUserCard(int userId,String nickName,String email,String label){
         UserCard userCard = new UserCard(userId);
-        UserCard result = mapper.baseSelectByKey(userCard);
-        //标示是否是更新操作
-        boolean update = true;
         //如果没查到用户名片，新建一个用户名片
-        if(result == null){
-            result = userCard;
-            update = false;
-        }
-        result.setNickName(nickName);
-        result.setEmail(email);
-        result.setLabel(label);
-
-        if(update){
-            mapper.baseUpdateByKey(result);
-        }else {
-            mapper.baseInsert(result);
+        userCard.setNickName(nickName);
+        userCard.setEmail(email);
+        userCard.setLabel(label);
+        int result = mapper.baseUpdateByKey(userCard);
+        if(result < 1){
+            return ResultData.error("用户名片不存在");
         }
         return ResultData.success();
     }
@@ -85,11 +77,12 @@ public class UserCardService {
         UserCard userCard = new UserCard(userId);
         userCard.setPortraitOriginName(originalFilename);
         userCard.setPortraitName(fileName);
+        //在注册时，会出现先上传用户头像后设置用户昵称的情况
         int result = mapper.baseUpdateByKey(userCard);
-        if(result > 0){
-            return ResultData.success();
+        if(result == 0){
+            mapper.baseInsert(userCard);
         }
-        return ResultData.error("用户名片不存在");
+        return ResultData.success();
     }
 
 

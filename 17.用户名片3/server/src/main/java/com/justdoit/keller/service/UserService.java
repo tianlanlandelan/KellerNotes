@@ -3,7 +3,9 @@ package com.justdoit.keller.service;
 import com.justdoit.keller.common.config.PublicConstant;
 import com.justdoit.keller.common.util.JwtUtils;
 import com.justdoit.keller.entity.EmailLog;
+import com.justdoit.keller.entity.UserCard;
 import com.justdoit.keller.entity.UserInfo;
+import com.justdoit.keller.mapper.UserCardMapper;
 import com.justdoit.keller.mapper.UserMapper;
 import com.justdoit.keller.common.response.ResultData;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,9 @@ public class UserService {
 
     @Resource
     private EmailService emailService;
+
+    @Resource
+    private UserCardMapper userCardMapper;
 
     /**
      * 发送邮件验证码
@@ -46,7 +51,7 @@ public class UserService {
     }
 
     /**
-     * 注册
+     * 注册，注册成功后返回 JWT
      * @param userInfo
      * @param code
      * @return
@@ -62,7 +67,9 @@ public class UserService {
             if(userInfo == null){
                 return ResultData.error("注册失败");
             }
-            return ResultData.success(userInfo.getId());
+            //创建用户名片
+            userCardMapper.baseInsert(new UserCard(userInfo.getId()));
+            return ResultData.success(JwtUtils.getJwtString(userInfo));
         }
         return ResultData.error("验证码错误或已过期,请重新获取");
     }

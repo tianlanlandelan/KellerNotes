@@ -15,7 +15,7 @@
 				<el-form-item>
 					<!--邮箱输入框-->
 					<span class="ColorCommon font-bold">邮箱</span>
-					<span class="ColorDanger" v-show="!user.emailChecked"> (请填写邮箱地址)</span>
+					<span class="ColorDanger" v-show="!user.emailChecked"> (请填写正确的邮箱地址)</span>
 					<el-input type="text" v-model="user.email" placeholder="kellerNotes@foxmail.com" autofocus="autofocus"></el-input>
 				</el-form-item>
 				<el-form-item style="width:100%;">
@@ -35,21 +35,39 @@
 					<!-- 验证码，必填 -->
 					<span class="ColorCommon font-bold">验证码</span>
 					<span class="ColorDanger" v-show="!user.codeChecked"> (请填写验证码)</span>
-					<el-input type="text" v-model="user.code" placeholder="6位长度的验证码" autofocus="autofocus" ></el-input>
+					<el-input type="text" v-model="user.code" placeholder="6位长度的验证码" autofocus="autofocus"></el-input>
 				</el-form-item>
 				<el-form-item style="width:100%;">
 					<!--密码输入框-->
 					<span class="ColorCommon font-bold">密码</span>
 					<span class="ColorDanger" v-show="!user.passwordChecked"> (请设置密码)</span>
-					<el-input type="password" v-model="user.password" placeholder="6到12位,英文字符和数字的组合" ></el-input>
+					<el-input type="password" v-model="user.password" placeholder="6到12位,英文字符和数字的组合"></el-input>
 				</el-form-item>
 				<el-form-item style="width:100%;">
 					<el-button type="primary" style="width:100%;" @click="handleRegister">注册</el-button>
 				</el-form-item>
 			</el-row>
 
-			<!-- 第三步，设置昵称和头像，完善个人信息  TODO-->
-			
+			<!-- 第三步，设置昵称和头像，完善个人信息 -->
+			<el-row v-if="step == 2">
+				<el-form-item>
+					<!-- 昵称 -->
+					<span class="ColorCommon font-bold">设置昵称</span>
+					<el-input type="text" v-model="user.nickName" placeholder="往后余生" autofocus="autofocus"></el-input>
+				</el-form-item>
+				<el-form-item style="width:100%;">
+					<!--头像-->
+					<span class="ColorCommon font-bold">选择头像</span>
+					<el-upload class="avatar-uploader" :action=uploadUrl :show-file-list="false" :on-success="handleAvatarSuccess"
+						:before-upload="beforeAvatarUpload">
+						<img v-if="imageUrl" :src="imageUrl" class="avatar">
+						<i v-else class="el-icon-plus avatar-uploader-icon"></i>
+					</el-upload>
+				</el-form-item>
+				<el-form-item style="width:100%;">
+					<el-button type="primary" style="width:100%;" @click="handleSetUserCard">完成</el-button>
+				</el-form-item>
+			</el-row>
 		</el-form>
 	</el-row>
 </template>
@@ -57,7 +75,8 @@
 <script>
 	import {
 		req_getCodeForRegister,
-		req_register
+		req_register,
+		req_setUserCard
 	} from '../api';
 	import {
 		format
@@ -69,16 +88,19 @@
 				getCodeButtonDisabled: false,
 				//注册用户数据
 				user: {
-					email:null,
-					code:null,
-					password:null,
-					emailChecked:true,
-					codeChecked:true,
-					passwordChecked:true
+					email: null,
+					code: null,
+					password: null,
+					emailChecked: true,
+					codeChecked: true,
+					passwordChecked: true,
+					nickName: null
 				},
 				//注册界面步骤条当前步骤Index
 				stepsActive: 0,
-				step: 0
+				step: 0,
+				uploadUrl: "upload",
+				imageUrl: ''
 			};
 		},
 		methods: {
@@ -86,9 +108,9 @@
 			 * 发送验证码
 			 */
 			handleGetCode() {
-				if(format.isEmail(this.user.email)){
+				if (format.isEmail(this.user.email)) {
 					this.user.emailChecked = true;
-				}else{
+				} else {
 					this.user.emailChecked = false;
 					return;
 				}
@@ -121,13 +143,13 @@
 			handleRegister() {
 				this.user.codeChecked = format.isCode(this.user.code);
 				this.user.passwordChecked = format.isPassword(this.user.password);
-				
+
 				if (this.user.codeChecked && this.user.passwordChecked) {
 					//调用注册接口
 					req_register(this.user).then(response => {
 						//解析接口应答的json串
 						let {
-							// data,
+							data,
 							message,
 							success
 						} = response;
@@ -140,12 +162,12 @@
 						} else {
 							var userName = this.user.email;
 							this.$notify.success({
-								title:"注册成功",
-								message: "您的账号：" + userName + " 已成功注册，可以登录了"
+								title: "注册成功",
+								message: "您的账号：" + userName + " 已成功注册"
 							});
-							this.$router.push({
-								path: "/Login"
-							});
+							this.step++;
+							window.localStorage.setItem("token", data);
+							this.uploadUrl = this.uploadUrl + "?token=" + data;
 						}
 					}).catch(response => {
 						let {
@@ -158,15 +180,89 @@
 					});
 				}
 			},
-			handleGoLogin(){
-				this.$router.push({ path: '/Login' });
+			/**
+			 * 跳转到登录页面
+			 */
+			handleGoLogin() {
+				this.$router.push({
+					path: '/Login'
+				});
+			},
+			/**
+			 * 设置用户名片，设置完成后跳转到用户主页
+			 */
+			handleSetUserCard() {
+				req_setUserCard(this.user).then(response => {
+					//解析接口应答的json串
+					let {
+						message,
+						success
+					} = response;
+					//应答不成功，提示错误信息
+					if (success !== 0) {
+						this.$message({
+							message: message,
+							type: 'error'
+						});
+					} else {
+						//应答成功，提示验证码发送成功
+						this.$notify.success({
+							title: this.user.nickName,
+							message: "名片设置成功"
+						});
+						this.$router.push({
+							path: "/Home"
+						});
+					}
+				});
+			},
+			beforeAvatarUpload(file) {
+				const isJPG = file.type === 'image/jpeg';
+				const isLt2M = file.size / 1024 / 1024 < 2;
+
+				if (!isJPG) {
+					this.$message.error('上传头像图片只能是 JPG 格式!');
+				}
+				if (!isLt2M) {
+					this.$message.error('上传头像图片大小不能超过 2MB!');
+				}
+				return isJPG && isLt2M;
+			},
+			handleAvatarSuccess(res, file) {
+				this.imageUrl = URL.createObjectURL(file.raw);
 			}
 		},
 		mounted() {
+
 		}
 	}
 </script>
 
 <style scoped>
+	.avatar-uploader .el-upload {
+		border: 1px dashed #d9d9d9;
+		border-radius: 6px;
+		cursor: pointer;
+		position: relative;
+		overflow: hidden;
+	}
 
+	.avatar-uploader .el-upload:hover {
+		border-color: #409EFF;
+	}
+
+	.avatar-uploader-icon {
+		font-size: 28px;
+		color: #8c939d;
+		width: 178px;
+		height: 178px;
+		line-height: 178px;
+		text-align: center;
+	}
+
+	.avatar {
+		width: 178px;
+		height: 178px;
+		display: block;
+	}
 </style>

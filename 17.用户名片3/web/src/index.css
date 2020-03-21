@@ -1,210 +1,57 @@
-body {
-	font-size: 16px;
-}
-
-img {
-	max-width: 1000px;
-}
-
+body {font-size: 16px;}
+img {max-width: 1000px;}
 /* 字体大小 */
-.font24 {
-	font-size: 24px;
-}
-
-/*  */
-.font22 {
-	font-size: 22px;
-}
-
-/*  */
-.font20 {
-	font-size: 20px;
-}
-
-/*  */
-.font18 {
-	font-size: 18px;
-}
-
-/*  */
-.font16 {
-	font-size: 16px;
-}
-
-/*  */
-.font14 {
-	font-size: 14px;
-}
-
-/*  */
-.font12 {
-	font-size: 12px;
-}
-
-/*  */
+.font24 {font-size: 24px;}
+.font22 {font-size: 22px;}
+.font20 {font-size: 20px;}
+.font18 {font-size: 18px;}
+.font16 {font-size: 16px;}
+.font14 {font-size: 14px;}
+.font12 {font-size: 12px;}
 /* 字体颜色 */
-.ColorDanger {
-	color: #F56C6C;
-}
-
-/* 表示警告含义的文字颜色 */
-.ColorSuccess {
-	color: #67C23A;
-}
-
-/* 表示成功含义的文字颜色 */
-.ColorPrimary {
-	color: #409EFF;
-}
-
-/* 和主题一样的蓝色 */
-.ColorInfo {
-	color: #909399;
-}
-
-/* 次要文字、弱提示类文字的颜色 */
-.ColorMain {
-	color: #303133
-}
-
-/* 主要文字的颜色 */
-.ColorCommon {
-	color: #606266;
-}
-
-/* 常规文字的颜色 */
+.ColorDanger {color: #F56C6C;}
+.ColorSuccess {color: #67C23A;}
+.ColorPrimary {color: #409EFF;}
+.ColorInfo {color: #909399;}
+.ColorMain {color: #303133}
+.ColorCommon {color: #606266;}
+.ColorWhite{color:white}
 /* 字体样式 */
-.font-bold {
-	font-weight: bold;
-}
+.font-bold {font-weight: bold;}
+.font-underline {text-decoration: underline;}
 
-/* 加粗  */
-.font-underline {
-	text-decoration: underline;
-}
-
-/* 加下划线 */
-.BgColorC0C4CC {
-	background-color: #C0C4CC
-}
+.BgColorC0C4CC {background-color: #C0C4CC}
 
 /* 布局方式 */
-.verticalRl {
-	writing-mode: vertical-lr;
-}
+.verticalRl {writing-mode: vertical-lr;}/* 文字垂直排列，多行文字从右向左排列 */
+.verticalLr {writing-mode: vertical-lr;}/* 文字垂直排列，多行文字从左向右排列 */
 
-/* 文字垂直排列，多行文字从右向左排列 */
-.verticalLr {
-	writing-mode: vertical-lr;
-}
+.alignCenter {text-align: center;}
+.alignRight {text-align: right;}
+.floatLeft {float: left;}
 
-/* 文字垂直排列，多行文字从左向右排列 */
-.alignCenter {
-	text-align: center;
-}
-
-/* 居中布局 */
-.alignRight {
-	text-align: right;
-}
-
-/* 靠右布局 */
-.floatLeft {
-	float: left;
-}
-
-/* 左浮动 */
 /* 边距 */
-.margin5 {
-	margin: 5px;
-}
-
-/* 5px外边距 */
-.margin10 {
-	margin: 10px;
-}
-
-/* 10px外边距 */
-.margin15 {
-	margin: 15px;
-}
-
-/* 15px外边距 */
-.margin20 {
-	margin: 20px;
-}
-
-/* 20px外边距  */
-.margin5-0 {
-	margin: 5px 0;
-}
-
-.margin10-0 {
-	margin: 10px 0;
-}
-
-.margin0-10 {
-	margin: 0 10px;
-}
-
-.marginTop20 {
-	margin-top: 20px;
-}
-
-.marginBottom10 {
-	margin-bottom: 10px;
-}
-
-.marginBottom20 {
-	margin-bottom: 20px;
-}
-
-.padding5 {
-	padding: 5px;
-}
-
-/* 5px内边距 */
-.padding10 {
-	padding: 10px;
-}
-
-/* 10px内边距 */
-.padding15 {
-	padding: 15px;
-}
-
-/* 15px内边距 */
-.padding20 {
-	padding: 20px;
-}
-
-/* 20px内边距 */
-.padding0-5 {
-	padding: 0 5px;
-}
-
-.padding10-0 {
-	padding: 10px 0;
-}
-
+.margin5 {margin: 5px;}
+.margin10 {margin: 10px;}
+.margin15 {margin: 15px;}
+.margin20 {margin: 20px;}
+.margin5-0 {margin: 5px 0;}
+.margin10-0 {margin: 10px 0;}
+.margin0-10 {margin: 0 10px;}
+.marginTop20 {margin-top: 20px;}
+.marginBottom10 {margin-bottom: 10px;}
+.marginBottom20 {margin-bottom: 20px;}
+.padding5 {padding: 5px;}
+.padding10 {padding: 10px;}
+.padding15 {padding: 15px;}
+.padding20 {padding: 20px;}
+.padding0-5 {padding: 0 5px;}
+.padding10-0 {padding: 10px 0;}
 /* 鼠标指针样式 */
-.cursorPointer {
-	cursor: pointer;
-}
-
-/* 变小手 */
-.width80 {
-	width: 80%;
-}
-
-.width100 {
-	width: 100%;
-}
-
-/* 宽度100% , 经常用在 img/video/div等需要控制宽度的组件上 */
-.width50 {
-	width: 50%;
-}
+.cursorPointer {cursor: pointer;}
+.width80 {width: 80%;}
+.width100 {width: 100%;}
+.width50 {width: 50%;}
 
 /* 遮罩层 */
 .box {
@@ -228,13 +75,13 @@ img {
 	background-color: #FFFFFF;
 	opacity: 1;
 	border-radius: 20px;
+	padding: 20px;
 	z-index: 999;
 }
 
 .border-2-info {
 	border-bottom: 2px solid #909399;
 }
-
 .border-three {
 	border-bottom: 1px solid #EBEEF5;
 }
@@ -251,4 +98,10 @@ img {
 	background: #fff;
 	border: 1px solid #eaeaea;
 	box-shadow: 0 0 25px #cac6c6;
+}
+
+/* 小头像 */
+.smallAvatar{
+	height: 40px;
+	border-radius: 20px;
 }

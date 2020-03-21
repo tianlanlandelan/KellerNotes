@@ -31,11 +31,10 @@ public class UploadController {
     private UserCardService userCardService;
 
     @PostMapping
-    public ResponseEntity upload(MultipartFile file, HttpServletRequest request){
+    public ResponseEntity upload(MultipartFile file,String token, HttpServletRequest request){
         if(file == null){
             return Response.badRequest();
         }
-        String token = request.getHeader(RequestConfig.TOKEN);
         Integer userId = JwtUtils.getUserId(token);
         if(userId == null){
             return Response.unauthorized();

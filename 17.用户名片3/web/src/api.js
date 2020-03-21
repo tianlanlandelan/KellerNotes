@@ -6,8 +6,10 @@ let form = "form"
 /** 不需要登录就能访问的路由 */
 let base = 'base';
 
+let upload = 'upload';
+
 /**
- * 获取注册验证码
+ * 获取注册验证码 1001
  */
 export const req_getCodeForRegister = (email) => { 
     return axios.get(base + '/getCodeForRegister', {
@@ -19,7 +21,7 @@ export const req_getCodeForRegister = (email) => {
 
 
 /**
- * 注册
+ * 注册 1002
  */
 export const req_register = (user) => { 
     return axios.post(base + '/register', {
@@ -30,7 +32,7 @@ export const req_register = (user) => {
 };
 
 /**
- * 登录接口
+ * 登录接口 1003
  */
 export const req_logon = (user) => { 
     return axios.post(base + '/login', {
@@ -42,18 +44,30 @@ export const req_logon = (user) => {
 
 
 /**
- * 修改个人信息
+ * 设置个人名片 2001
  */
-export const req_updateUserInfo = (user) => { 
-    return axios.put(api, {
-		id:user.id,
+export const req_setUserCard = (user) => { 
+    return axios.post(api, {
 		nickName:user.nickName,
-		avatarId:user.avatarId
+		email:user.email,
+		label:user.label
     },{
 		headers:{
-			'method':'userInfo'
+			'method':'userCard',
+			'token'	: window.localStorage.getItem("token")
 		}
 	}).then(res => res.data).catch(err => err); 
+};
+/**
+ * 获取用户名片 2002
+ */
+export const req_getUserCard = () => { 
+    return axios.get(form, {
+		headers:{
+			'method':'userCard',
+			'token'	: window.localStorage.getItem("token")
+		}
+	}).then(res => res.data).catch(err => err);  
 };
 
 
@@ -155,16 +169,7 @@ export const req_getNotesList = (userId) => {
 		}
 	}).then(res => res.data).catch(err => err);  
 };
-export const req_getChapterList = (courseId) => { 
-    return axios.get(form, {
-		params:{
-			courseId:courseId
-		},
-		headers:{
-			'method':'chapter'
-		}
-	}).then(res => res.data).catch(err => err);  
-};
+
 export const req_deleteChapter = (id) => { 
     return axios.delete(form, {
 		params:{

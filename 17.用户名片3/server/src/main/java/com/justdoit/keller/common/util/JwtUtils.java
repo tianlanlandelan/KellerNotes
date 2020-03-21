@@ -65,7 +65,6 @@ public class JwtUtils {
             userInfo.setType(claims.get(userTypeKey,Integer.class));
             return userInfo;
         }catch (Exception e){
-            e.printStackTrace();
             Console.error("checkJwt","JWT 解析失败",jwtString,e.getMessage());
             return null;
         }
