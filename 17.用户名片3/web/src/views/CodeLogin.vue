@@ -1,26 +1,25 @@
 <!-- 验证码登录 -->
 <template>
-    <div>
-        验证码登录
-    </div>
+	<div>
+		验证码登录
+	</div>
 </template>
 
 <script>
-    export default{
-		data(){
-			return{
-				
+	export default {
+		data() {
+			return {
+
 			}
 		},
-		methods:{
-			
-		},mounted(){
-			
+		methods: {
+
+		},
+		mounted() {
+
 		}
 	}
 </script>
 
-<style scoped>
+<style scoped>	
 </style>
-
-
