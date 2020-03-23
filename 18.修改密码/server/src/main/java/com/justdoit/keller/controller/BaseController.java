@@ -1,6 +1,7 @@
 package com.justdoit.keller.controller;
 
 import com.justdoit.keller.common.config.PublicConstant;
+import com.justdoit.keller.common.config.RequestConfig;
 import com.justdoit.keller.common.response.Response;
 import com.justdoit.keller.common.util.Console;
 import com.justdoit.keller.common.util.StringUtils;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -116,5 +118,40 @@ public class BaseController {
             return Response.badRequest();
         }
         return Response.ok(userService.loginWithCode(email,type,code));
+    }
+
+    /**
+     * 通过邮件重置密码
+     *
+     * @param email
+     * @return
+     */
+    @PostMapping("/sendResetPasswordEmail")
+    public ResponseEntity sendResetPasswordEmail(String email,Integer type){
+        Console.info("sendResetPasswordEmail",email);
+        if(type == null){
+            type = PublicConstant.DEFAULT_USER_TYPE;
+        }
+        if(StringUtils.isEmail(email)){
+            return Response.ok(userService.sendResetPasswordEmail(email,type));
+        }
+        return Response.badRequest();
+    }
+
+    /**
+     * 通过邮件重置密码，上送参数中是密码
+     * 从请求中解析 JWT
+     * @param password
+     * @param request
+     * @return
+     */
+    @PostMapping("/resetPasswordByEmail")
+    public ResponseEntity resetPasswordByEmail(String password,String token, HttpServletRequest request){
+        Console.info("resetPasswordByEmail",password);
+        if(token == null){
+            return Response.badRequest();
+        }
+        return Response.ok(userService.resetPasswordByEmail(token,password));
+
     }
 }

@@ -170,16 +170,6 @@ public class EmailLog extends BaseEntity {
     }
 
 
-    public boolean equalsCode(EmailLog emailLog) {
-        if(emailLog.getType().equals(type)
-                && emailLog.getEmail().equals(email)
-                && emailLog.getCode().equals(code)){
-            return true;
-        }
-
-        return false;
-    }
-
     /**
      * 是否是有效的验证码
      * 要求成功发送，发送时间在5分钟内，且未使用过

@@ -2,7 +2,6 @@ package com.justdoit.keller.common.util;
 
 import com.justdoit.keller.common.config.PublicConstant;
 import com.justdoit.keller.common.config.RequestConfig;
-import com.justdoit.keller.entity.UserInfo;
 import org.springframework.http.ResponseEntity;
 
 import javax.servlet.http.HttpServletRequest;
@@ -123,7 +122,7 @@ public class RequestUtil {
      */
     public static String getUrl(Map<String,String> params,HttpServletRequest request){
         //从 JWT 中解析出 UserId
-        Integer userId = JwtUtils.getUserId(request.getHeader(RequestConfig.TOKEN));
+        Integer userId = JwtUtils.getUserIdForLogin(request.getHeader(RequestConfig.TOKEN));
         HashMap<String,String> headers = getHeader(request);
         StringBuilder builder = new StringBuilder();
 

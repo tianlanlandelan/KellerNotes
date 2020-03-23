@@ -2,7 +2,7 @@ package com.justdoit.keller.service;
 
 import com.justdoit.keller.common.config.PublicConstant;
 import com.justdoit.keller.common.util.JwtUtils;
-import com.justdoit.keller.entity.EmailLog;
+import com.justdoit.keller.common.util.StringUtils;
 import com.justdoit.keller.entity.UserCard;
 import com.justdoit.keller.entity.UserInfo;
 import com.justdoit.keller.mapper.UserCardMapper;
@@ -11,6 +11,7 @@ import com.justdoit.keller.common.response.ResultData;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -57,19 +58,15 @@ public class UserService {
      * @return
      */
     public ResultData register(UserInfo userInfo,String code){
-
-        EmailLog emailLog = new EmailLog();
-        emailLog.setEmail(userInfo.getEmail());
-        emailLog.setType(PublicConstant.REGISTER_TYPE);
-        emailLog.setCode(code);
-        if(emailService.checkCode(emailLog)){
+        if(emailService.checkCode(userInfo.getEmail(),code,PublicConstant.REGISTER_TYPE)){
             userInfo = insert(userInfo);
             if(userInfo == null){
                 return ResultData.error("注册失败");
             }
             //创建用户名片
             userCardMapper.baseInsert(new UserCard(userInfo.getId()));
-            return ResultData.success(JwtUtils.getJwtString(userInfo));
+            // 返回 JWT ，注册成功时返回 JWT,用户可以不用再做一遍登录操作
+            return ResultData.success(JwtUtils.getJwtForLogin(userInfo));
         }
         return ResultData.error("验证码错误或已过期,请重新获取");
     }
@@ -98,7 +95,7 @@ public class UserService {
         //校验密码
         if(user.getPassword().equals(password)){
             //返回 JWT
-            return ResultData.success(JwtUtils.getJwtString(user));
+            return ResultData.success(JwtUtils.getJwtForLogin(user));
         }
         return ResultData.error("账号密码错误");
     }
@@ -111,18 +108,62 @@ public class UserService {
      * @return
      */
     public ResultData loginWithCode(String email,int type,String code){
-        EmailLog emailLog = new EmailLog();
-        emailLog.setEmail(email);
-        emailLog.setType(PublicConstant.LOGIN_TYPE);
-        emailLog.setCode(code);
-        if(emailService.checkCode(emailLog)){
+        if(emailService.checkCode(email,code,PublicConstant.LOGIN_TYPE)){
             UserInfo userInfo = getByEmailAndType(type,email);
             if(userInfo == null){
                 return ResultData.error("用户不存在");
             }
-            return ResultData.success(JwtUtils.getJwtString(userInfo));
+            return ResultData.success(JwtUtils.getJwtForLogin(userInfo));
         }
         return ResultData.error("验证码错误或已过期,请重新获取");
+    }
+
+    /**
+     * 发送重置密码邮件
+     * @param email
+     * @return
+     */
+    public ResultData sendResetPasswordEmail(String email,int type){
+        UserInfo userInfo = getByEmailAndType(type,email);
+        if(userInfo == null){
+            return ResultData.error("该邮箱尚未注册");
+        }
+        String code = StringUtils.getAllCharString(PublicConstant.EMAIL_CODE_LENGTH);
+        String token = JwtUtils.getJwtForResetPassword(userInfo,code);
+        return emailService.sendResetPasswordEmail(email,code,token);
+    }
+
+    /**
+     * 通过邮件重置密码
+     * 校验 JWT，从中解析出 邮箱、用户类型、验证码
+     * 然后去 邮件发送记录中校验验证码
+     * 校验成功后重置密码
+     * @param token
+     * @param password
+     * @return
+     */
+    public ResultData resetPasswordByEmail(String token,String password){
+        String userEmail = JwtUtils.getEmailForResetPassword(token);
+        String userCode = JwtUtils.getCodeForResetPassword(token);
+        Integer userType = JwtUtils.getUserTypeForResetPassword(token);
+
+        UserInfo result = getByEmailAndType(userType,userEmail);
+        if(result == null){
+            return ResultData.error("该邮箱尚未注册");
+        }
+        if(StringUtils.isEmpty(userCode,userEmail)){
+            return ResultData.error("身份验证失败");
+        }
+        if(emailService.checkCode(userEmail,userCode,PublicConstant.RESET_PASSWORD_TYPE)){
+            result.setPassword(password);
+            result.setUpdateTime(new Date());
+            result.setUpdateUserId(result.getId());
+
+            userMapper.baseUpdateById(result);
+
+            return ResultData.success();
+        }
+        return ResultData.error("密码重置失败，请重试");
     }
 
     public ResultData getAll(){
@@ -151,6 +192,7 @@ public class UserService {
         }
         return null;
     }
+
 
 
     private UserInfo insert(UserInfo userInfo){

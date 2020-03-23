@@ -43,6 +43,10 @@ public class SendEmailUtils {
             "验证码:%1$s，用于账号： %2$s 找回密码，泄露有风险。"
                     + PublicConstant.EMAIL_CODE_TIME + "分钟内使用有效。";
 
+    public static final String ResetPasswordLinkBody =
+            "您好！我们已收到您的账号： %1$s 重置密码的申请，" +
+                    "请点击链接重置密码： http://127.0.0.1:8088/Password?id=%2$s ，该链接使用一次后失效";
+
 
     public static Session session= null;
 
@@ -108,8 +112,7 @@ public class SendEmailUtils {
      * @param email 收件人邮箱
      * @return 邮件实体类EmailEntity
      */
-    public static EmailLog sendVCode(int type, String email){
-        String code = StringUtils.getAllCharString(PublicConstant.EMAIL_CODE_LENGTH);
+    public static EmailLog sendVCode(int type, String email,String code){
         EmailLog entity = new EmailLog();
         entity.setEmail(email);
         entity.setType(type);
@@ -133,6 +136,30 @@ public class SendEmailUtils {
             sendSimpleMail(entity.getEmail(),entity.getTitle(),entity.getContent());
         }catch (Exception e){
             Console.error("send sendVerificationCode error :",e.getMessage());
+            entity.setResult(e.getMessage());
+            entity.setStatusCode(PublicConstant.FAILED);
+        }
+        return entity;
+    }
+
+    /**
+     * 发送重置验证码邮件，该邮件中会包含一个重置密码的链接
+     * @param email
+     * @return
+     */
+    public static EmailLog sendResetPasswordEmail(String email,String code,String token){
+        EmailLog entity = new EmailLog();
+        entity.setEmail(email);
+        entity.setType(PublicConstant.RESET_PASSWORD_TYPE );
+        entity.setTitle(TITLE);
+        String body = String.format(ResetPasswordLinkBody,email,token);
+
+        entity.setContent(body);
+        entity.setCode(code);
+        try {
+            sendSimpleMail(entity.getEmail(),entity.getTitle(),entity.getContent());
+        }catch (Exception e){
+            Console.error("send sendResetPasswordEmail error :",e.getMessage());
             entity.setResult(e.getMessage());
             entity.setStatusCode(PublicConstant.FAILED);
         }
