@@ -8,10 +8,13 @@
 				<el-row>
 					<el-col :span="4" :offset="4">
 						<div>
+							<!-- 头像，添加一个超连接，点击可以查看原图 -->
 							<a :href="user.protraitUrl" target="_blank">
 								<img class="span smallAvatar" :src="user.protraitThumUrl" />
 							</a>
+							<!-- 昵称 -->
 							<span class="span ColorInfo"> {{user.nickName}}</span>
+							<!-- 下拉菜单，用于进行修改名片、修改密码、退出登录等操作 -->
 							<el-dropdown @command="handleCommand">
 								<span class="el-dropdown-link">
 									<i class="el-icon-arrow-down el-icon--right"></i>
@@ -24,9 +27,11 @@
 							</el-dropdown>
 						</div>
 					</el-col>
+					<!-- 个性签名 -->
 					<el-col :span="8" class="ColorInfo">
 						{{user.label}}
 					</el-col>
+					<!-- 应用名 -->
 					<el-col :span="4"  class="font20 ColorPrimary font-bold alignRight" >
 						Keller Notes
 					</el-col>
@@ -78,7 +83,7 @@
 					</el-upload>
 				</el-form-item>
 				<el-form-item style="width:100%;">
-					<!-- 登录按钮 -->
+					<!-- 修改名片 -->
 					<el-button type="primary" style="width:100%;" @click = "handleSetUserCard()" :disabled="!checkEmail()">保存修改</el-button>
 				</el-form-item>
 			</el-form>

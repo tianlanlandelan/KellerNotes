@@ -1,7 +1,10 @@
 <!-- 重置密码 -->
 <template>
     <div>
-       重置密码 
+       <div class="box"></div>
+	   <div class="boxCenter">
+		   
+	   </div>
     </div>
 </template>
 
