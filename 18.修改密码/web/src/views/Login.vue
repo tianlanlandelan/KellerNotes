@@ -8,7 +8,7 @@
 				<!-- 用户名输入框 -->
 				<span class="tip">邮箱 </span>
 				<span class="ColorDanger" v-show="!user.emailChecked"> ( 请输入正确的邮箱地址 )</span>
-				<el-input type="text" autofocus="autofocus" v-model="user.email" auto-complete="off" placeholder="kellerNotes@foxmail.com"></el-input>
+				<el-input type="text" autofocus v-model="user.email" auto-complete="off" placeholder="kellerNotes@foxmail.com"></el-input>
 
 				<!-- 密码输入框 -->
 				<span class="tip">密码 </span>
@@ -79,7 +79,7 @@
 			},
 			//跳转到重置密码页面	
 			handleGoPassword(){
-				this.$router.push({ path: '/Password' });
+				this.$router.push({ path: '/ForgetPassword' });
 			},
 			//跳转到注册页面
 			handleGoRegister(){

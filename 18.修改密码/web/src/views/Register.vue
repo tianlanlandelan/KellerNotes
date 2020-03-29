@@ -16,7 +16,7 @@
 					<!--邮箱输入框-->
 					<span class="ColorCommon font-bold">邮箱</span>
 					<span class="ColorDanger" v-show="!user.emailChecked"> (请填写正确的邮箱地址)</span>
-					<el-input type="text" v-model="user.email" placeholder="kellerNotes@foxmail.com" autofocus="autofocus"></el-input>
+					<el-input type="text" v-model="user.email" placeholder="kellerNotes@foxmail.com" autofocus></el-input>
 				</el-form-item>
 				<el-form-item style="width:100%;">
 					<el-button type="primary" style="width:100%;" :disabled="getCodeButtonDisabled" @click="handleGetCode">获取验证码</el-button>
@@ -40,7 +40,7 @@
 				<el-form-item style="width:100%;">
 					<!--密码输入框-->
 					<span class="ColorCommon font-bold">密码</span>
-					<span class="ColorDanger" v-show="!user.passwordChecked"> (请设置密码)</span>
+					<span class="ColorDanger" v-show="!user.passwordChecked"> (6到12位,英文字符和数字的组合)</span>
 					<el-input type="password" v-model="user.password" placeholder="6到12位,英文字符和数字的组合"></el-input>
 				</el-form-item>
 				<el-form-item style="width:100%;">
