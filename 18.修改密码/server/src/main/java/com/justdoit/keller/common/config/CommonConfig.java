@@ -54,4 +54,7 @@ public class CommonConfig {
     @Value("${thum.path}")
     public String thumPath;
 
+    @Value("${web.url}")
+    public String webUrl;
+
 }

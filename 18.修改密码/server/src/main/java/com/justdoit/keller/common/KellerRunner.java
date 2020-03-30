@@ -22,7 +22,7 @@ public class KellerRunner implements ApplicationRunner {
     private CommonConfig config;
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
         PublicConstant.port = config.port;
         PublicConstant.serviceUrl = "https://127.0.0.1:" + config.port;
         PublicConstant.appName = config.appName;
@@ -34,5 +34,6 @@ public class KellerRunner implements ApplicationRunner {
         PublicConstant.nginxUrl = config.nginxUrl;
         PublicConstant.imgPath = config.imgPath;
         PublicConstant.thumPath = config.thumPath;
+        PublicConstant.webUrl = config.webUrl;
     }
 }

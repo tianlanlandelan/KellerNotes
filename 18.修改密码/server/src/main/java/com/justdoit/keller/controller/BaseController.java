@@ -123,14 +123,19 @@ public class BaseController {
     /**
      * 通过邮件重置密码
      *
-     * @param email
+     * @param params
      * @return
      */
     @PostMapping("/sendResetPasswordEmail")
-    public ResponseEntity sendResetPasswordEmail(String email,Integer type){
-        Console.info("sendResetPasswordEmail",email);
-        if(type == null){
+    public ResponseEntity sendResetPasswordEmail(@RequestBody Map<String,String> params){
+        Console.info("sendResetPasswordEmail",params);
+        String email = params.get("email");
+        String typeStr = params.get("type");
+        int type ;
+        if(typeStr == null){
             type = PublicConstant.DEFAULT_USER_TYPE;
+        }else {
+            type= Integer.parseInt(typeStr);
         }
         if(StringUtils.isEmail(email)){
             return Response.ok(userService.sendResetPasswordEmail(email,type));
@@ -141,13 +146,14 @@ public class BaseController {
     /**
      * 通过邮件重置密码，上送参数中是密码
      * 从请求中解析 JWT
-     * @param password
-     * @param request
+     * @param params
      * @return
      */
     @PostMapping("/resetPasswordByEmail")
-    public ResponseEntity resetPasswordByEmail(String password,String token, HttpServletRequest request){
-        Console.info("resetPasswordByEmail",password);
+    public ResponseEntity resetPasswordByEmail(@RequestBody Map<String,String> params){
+        Console.info("resetPasswordByEmail",params);
+        String password = params.get("password");
+        String token = params.get("token");
         if(token == null){
             return Response.badRequest();
         }

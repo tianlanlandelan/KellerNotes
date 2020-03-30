@@ -113,6 +113,8 @@ public class PublicConstant {
 
     public static String thumPath;
 
+    public static String webUrl;
+
     /**
      * 缩略图前缀名
      */

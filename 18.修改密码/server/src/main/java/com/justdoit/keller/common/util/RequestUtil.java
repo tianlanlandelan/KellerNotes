@@ -1,10 +1,14 @@
 package com.justdoit.keller.common.util;
 
+import com.alibaba.fastjson.JSONObject;
 import com.justdoit.keller.common.config.PublicConstant;
 import com.justdoit.keller.common.config.RequestConfig;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,23 +25,8 @@ public class RequestUtil {
      * @param params 请求参数
      * @param response 应答
      */
-    public static void successLog(HttpServletRequest request, Map<String,String> params, ResponseEntity response){
-        String requestId = StringUtils.getUUID();
-        Console.info("api header",requestId,getHeader(request));
-        Console.info("param",requestId,params);
-        Console.info("response success",requestId,response.getBody());
-    }
-
-    /**
-     * 记录请求成功的日志（使用form提交参数的请求，请求在Request中）
-     * @param request 请求
-     * @param response 应答
-     */
-    public static void successLog(HttpServletRequest request, ResponseEntity response){
-        String requestId = StringUtils.getUUID();
-        Console.info("form header",requestId,getHeader(request));
-        Console.info("param",requestId,getParam(request));
-        Console.info("response success",requestId,response.getBody());
+    public static void successLog(HttpServletRequest request, Map<String,Object> params, ResponseEntity response){
+        Console.info("response success",getHeader(request),params,response.getBody());
     }
 
     /**
@@ -46,26 +35,12 @@ public class RequestUtil {
      * @param params 参数
      * @param response 应答
      */
-    public static void errorLog(HttpServletRequest request, Map<String,String> params, ResponseEntity response){
-        String requestId = StringUtils.getUUID();
-        Console.error("api header",requestId,getHeader(request));
-        Console.error("param",requestId,params);
-        Console.error("response error",requestId,response.getBody());
+    private static void errorLog(HttpServletRequest request, Map<String,Object> params, ResponseEntity response){
+        Console.error("response success",getHeader(request),params,response.getBody());
     }
 
-    /**
-     * 记录请求失败的日志（使用form提交参数的请求，请求在Request中）
-     * @param request 请求
-     * @param response 应答
-     */
-    public static void errorLog(HttpServletRequest request, ResponseEntity response){
-        String requestId = StringUtils.getUUID();
-        Console.error("form header",requestId,getHeader(request));
-        Console.error("param",requestId,getParam(request));
-        Console.error("response error",requestId,response.getBody());
-    }
 
-    public static HashMap<String,String> getHeader(HttpServletRequest request){
+    private static HashMap<String,String> getHeader(HttpServletRequest request){
         HashMap<String,String> headerMap = new HashMap<>(16);
         //请求的URL地址
         headerMap.put(RequestConfig.URL,request.getRequestURL().toString());
@@ -91,8 +66,46 @@ public class RequestUtil {
         return headerMap;
     }
 
-    public static Map<String,String> getParam(HttpServletRequest request){
-        Map<String,String> paramMap = new HashMap<>(16);
+    /**
+     *
+     * @param request
+     * @return
+     */
+    public static Map<String,Object> getBodyParams(HttpServletRequest request){
+        BufferedReader streamReader = null;
+        StringBuilder responseStrBuilder = new StringBuilder();
+        String inputStr;
+        try {
+            streamReader = new BufferedReader( new InputStreamReader(request.getInputStream(), "UTF-8"));
+            while ((inputStr = streamReader.readLine()) != null) {
+                responseStrBuilder.append(inputStr);
+            }
+
+            String str = responseStrBuilder.toString();
+            if(str.isEmpty()){
+                return null;
+            }
+            JSONObject jsonObject = JSONObject.parseObject(str);
+            Map<String,Object> params = jsonObject.getInnerMap();
+            if(params == null || params.size() < 1){
+                return null;
+            }
+            return params;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }finally {
+            try{
+                streamReader.close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    public static Map<String,Object> getParam(HttpServletRequest request){
+        Map<String,Object> paramMap = new HashMap<>(16);
         //request对象封装的参数是以Map的形式存储的
         Map<String, String[]> map = request.getParameterMap();
         for(Map.Entry<String, String[]> entry :map.entrySet()){
@@ -116,11 +129,10 @@ public class RequestUtil {
 
     /**
      * 根据请求参数获取到URL，会解析请求中的 JWT，并将解析出的 UserId 拼接在请求中
-     * @param params
      * @param request
      * @return
      */
-    public static String getUrl(Map<String,String> params,HttpServletRequest request){
+    private static String getUrl(Map<String,Object> params,HttpServletRequest request){
         //从 JWT 中解析出 UserId
         Integer userId = JwtUtils.getUserIdForLogin(request.getHeader(RequestConfig.TOKEN));
         HashMap<String,String> headers = getHeader(request);
@@ -146,6 +158,37 @@ public class RequestUtil {
         }
         Console.info(builder.toString());
         return builder.toString();
+    }
+
+    public static ResponseEntity doGet(HttpServletRequest request,Map<String,Object> params,RestTemplate restTemplate){
+        ResponseEntity responseEntity ;
+        try {
+            String url = getUrl(params,request);
+            if(params == null){
+                responseEntity = restTemplate.getForEntity(url, String.class);
+            }else{
+                responseEntity = restTemplate.getForEntity(url, String.class,params);
+            }
+            successLog(request,params,responseEntity);
+        }catch (Exception e){
+            responseEntity = ResponseUtils.getResponseFromException(e);
+            errorLog(request,params,responseEntity);
+        }
+        return responseEntity;
+    }
+
+
+
+    public static ResponseEntity doPost(HttpServletRequest request,Map<String,Object> params,RestTemplate restTemplate){
+        ResponseEntity responseEntity;
+        try {
+            responseEntity = restTemplate.postForEntity(getUrl(params,request),null,String.class,params);
+            successLog(request,params,responseEntity);
+        }catch (Exception e){
+            responseEntity = ResponseUtils.getResponseFromException(e);
+            errorLog(request,params,responseEntity);
+        }
+        return responseEntity;
     }
 
 }

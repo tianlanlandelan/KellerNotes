@@ -45,7 +45,8 @@ public class SendEmailUtils {
 
     public static final String ResetPasswordLinkBody =
             "您好！我们已收到您的账号： %1$s 重置密码的申请，" +
-                    "请点击链接重置密码： http://127.0.0.1:8088/Password?id=%2$s ，该链接使用一次后失效";
+                    "请点击链接重置密码： " + PublicConstant.webUrl +
+                    "/ResetPassword/%2$s ，该链接使用一次后失效";
 
 
     public static Session session= null;

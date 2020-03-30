@@ -1,6 +1,5 @@
 package com.justdoit.keller.common.response;
 
-import com.justdoit.keller.common.util.Console;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +16,6 @@ public class Response {
      * @return
      */
     public static ResponseEntity ok(ResultData object){
-        Console.info("ok",object);
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON).body(object);
     }
@@ -28,7 +26,6 @@ public class Response {
      */
     public static ResponseEntity ok(){
         ResultData response = ResultData.success();
-        Console.info("ok",response);
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON).body(response);
     }
@@ -39,7 +36,6 @@ public class Response {
      */
     public static ResponseEntity badRequest(){
         ResultData response = ResultData.error("请求参数异常");
-        Console.info("badRequest",response);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .contentType(MediaType.APPLICATION_JSON).body(response);
     }
@@ -50,7 +46,6 @@ public class Response {
      */
     public static ResponseEntity unauthorized(){
         ResultData response = ResultData.error("用户未登录");
-        Console.info("unauthorized",response);
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .contentType(MediaType.APPLICATION_JSON).body(response);
     }
@@ -61,7 +56,6 @@ public class Response {
      */
     public static ResponseEntity forbidden(){
         ResultData response = ResultData.error("没有权限");
-        Console.info("forbidden",response);
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .contentType(MediaType.APPLICATION_JSON).body(response);
     }
@@ -72,7 +66,6 @@ public class Response {
      */
     public static ResponseEntity error(){
         ResultData response = ResultData.error("系统错误");
-        Console.info("error",response);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .contentType(MediaType.APPLICATION_JSON).body(response);
     }
