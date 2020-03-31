@@ -67,7 +67,7 @@ public class RequestUtil {
     }
 
     /**
-     *
+     *  读取 Body 中的参数，并将其转换成 Map
      * @param request
      * @return
      */
