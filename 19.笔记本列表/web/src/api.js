@@ -89,147 +89,61 @@ export const req_getUserCard = () => {
 	}).then(res => res.data).catch(err => err);  
 };
 
-
-
-export const req_addNote = (note) => { 
+/**
+ * 添加笔记本 3001
+ */
+export const req_addNotes = (notes) => { 
     return axios.post(api, {
-		id			:note.id,
-		userId		:note.userId,
-		notesId		:note.notesId,
-		chapterId	:note.chapterId,
-        title		:note.title,
+		title:notes.title,
+		subTitle:notes.subTitle,
+		sort:notes.sort
     },{
 		headers:{
-			'method':'note'
-		}
-	}).then(res => res.data).catch(err => err); 
-};
-export const req_saveNote = (id,name,value) => { 
-    return axios.put(api, {
-		id:id,
-		name:name,
-        value:value
-    },{
-		headers:{
-			'method':'note/save'
+			'method':'notes',
+			'token'	: window.localStorage.getItem("token")
 		}
 	}).then(res => res.data).catch(err => err); 
 };
 
 /**
- * 修改课时顺序
+ * 修改笔记本 3002
  */
-export const req_updateNote = (id,chapterId,sort) => { 
-    return axios.put(api, {
-		id:id,
-		chapterId:chapterId,
-		sort:sort
-    },{
-		headers:{
-			'method':'note'
-		}
-	}).then(res => res.data).catch(err => err); 
-};
-
-export const req_deleteTopic = (id) => { 
-    return axios.delete(form, {
-		params:{
-			id:id
-		},
-		headers:{
-			'method':'topicInfo'
-		}
-	}).then(res => res.data).catch(err => err); 
-};
 export const req_saveNotes = (notes) => { 
     return axios.post(api, {
 		id:notes.id,
-		userId:notes.userId,
-        title:notes.title,
-		subTitle:notes.subTitle
+		title:notes.title,
+		subTitle:notes.subTitle,
+		sort:notes.sort
     },{
 		headers:{
-			'method':'notes'
-		}
-	}).then(res => res.data)
-	.catch(err => err); 
-};
-export const req_saveChapter = (chapter) => { 
-    return axios.post(api, {
-		id:chapter.id,
-        notesId:chapter.notesId,
-		name:chapter.name,
-		sort:chapter.sort
-    },{
-		headers:{
-			'method':'chapter'
-		}
-	}).then(res => res.data)
-	.catch(err => err); 
-};
-export const req_updateChapter = (id,sort,name) => { 
-    return axios.put(api, {
-		id:id,
-		sort:sort,
-		name:name
-    },{
-		headers:{
-			'method':'chapter'
+			'method':'notes/update',
+			'token'	: window.localStorage.getItem("token")
 		}
 	}).then(res => res.data).catch(err => err); 
 };
-export const req_getNotesList = (userId) => { 
-    return axios.get(form, {
-		params:{
-			userId:userId
-		},
+
+/**
+ * 修改笔记本 3003
+ */
+export const req_deleteNotes = (id) => { 
+    return axios.post(api, {
+		id:id
+    },{
 		headers:{
-			'method':'notes/getList'
+			'method':'notes/delete',
+			'token'	: window.localStorage.getItem("token")
+		}
+	}).then(res => res.data).catch(err => err); 
+};
+
+/**
+ * 获取笔记本列表 3004
+ */
+export const req_getNotesList = () => { 
+    return axios.get(api, {
+		headers:{
+			'method':'notes',
+			'token'	: window.localStorage.getItem("token")
 		}
 	}).then(res => res.data).catch(err => err);  
 };
-
-export const req_deleteChapter = (id) => { 
-    return axios.delete(form, {
-		params:{
-			id:id
-		},
-		headers:{
-			'method':'chapter'
-		}
-	}).then(res => res.data).catch(err => err); 
-};
-export const req_getCourse = (id) => { 
-    return axios.get(form, {
-		params:{
-			id:id
-		},
-		headers:{
-			'method':'course'
-		}
-	}).then(res => res.data).catch(err => err); 
-};
-export const req_getNoteList = (notesId) => { 
-    return axios.get(form, {
-		params:{
-			notesId:notesId
-		},
-		headers:{
-			'method':'note/getList'
-		}
-	}).then(res => res.data).catch(err => err); 
-};
-
-
-export const req_getNoteContent = (id,name) => { 
-    return axios.get(form, {
-		params:{
-			id:id,
-			name:name
-		},
-		headers:{
-			'method':'note/getContent'
-		}
-	}).then(res => res.data).catch(err => err); 
-};
-

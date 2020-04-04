@@ -14,7 +14,7 @@ let routes = [
 	{ 	path: '/CodeLogin',component: CodeLogin, name: 'CodeLogin'},
 	{ 	path: '/Home',component: Home, name: 'Home'},
 	{ 	path: '/404',component: NotFound, name: 'NotFound'},
-	{	path: '*', redirect: { path: '/404' }}
+	{	path: '*', redirect: { path: '/Login' }}
 ];
 
 export default routes;

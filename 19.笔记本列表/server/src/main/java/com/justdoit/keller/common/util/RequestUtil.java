@@ -147,7 +147,7 @@ public class RequestUtil {
             return builder.toString();
         }
         for(String key :params.keySet()){
-            //过滤校请求中的 userId
+            //过滤掉请求中的 userId
             if(PublicConstant.USER_ID_KEY.equals(key)){
                 continue;
             }

@@ -50,7 +50,7 @@ public class UserCardService {
             return ResultData.error("用户名片不存在");
         }
         String imgName = userCard.getPortraitName();
-        if(StringUtils.isNotEmpty(imgName)){
+        if(StringUtils.noEmpty(imgName)){
             userCard.setProtraitUrl(FileUtils.getImgUrl(imgName));
             userCard.setProtraitThumUrl(FileUtils.getThumUrl(imgName));
         }
