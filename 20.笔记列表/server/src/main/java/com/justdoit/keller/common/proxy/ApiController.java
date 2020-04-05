@@ -38,7 +38,7 @@ public class ApiController {
      */
     @GetMapping
     public ResponseEntity get(){
-        Map<String,Object> params = RequestUtil.getBodyParams(request);
+        Map<String,Object> params = RequestUtil.getParam(request);
         return RequestUtil.doGet(request,params,restTemplate);
     }
 

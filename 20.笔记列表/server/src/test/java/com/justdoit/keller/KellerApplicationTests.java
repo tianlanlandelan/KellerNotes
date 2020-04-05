@@ -1,7 +1,9 @@
 package com.justdoit.keller;
 
+import com.justdoit.keller.entity.NoteInfo;
 import com.justdoit.keller.entity.NotesInfo;
 import com.justdoit.keller.entity.UserCard;
+import com.justdoit.keller.mapper.NoteMapper;
 import com.justdoit.keller.mapper.NotesMapper;
 import com.justdoit.keller.mapper.UserCardMapper;
 import org.junit.jupiter.api.Test;
@@ -29,6 +31,14 @@ class KellerApplicationTests {
     @Test
     public void createNotesTable(){
         notesMapper.baseCreate(new NotesInfo());
+    }
+
+
+    @Resource
+    private NoteMapper noteMapper;
+    @Test
+    public void createNoteTable(){
+        noteMapper.baseCreate(new NoteInfo());
     }
 
 }

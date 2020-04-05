@@ -147,3 +147,49 @@ export const req_getNotesList = () => {
 		}
 	}).then(res => res.data).catch(err => err);  
 };
+
+
+/**
+ * 添加笔记 4001
+ */
+export const req_addNote = (note) => { 
+    return axios.post(api, {
+		notesId:note.notesId,
+		title:note.title,
+		type:note.type
+    },{
+		headers:{
+			'method':'note',
+			'token'	: window.localStorage.getItem("token")
+		}
+	}).then(res => res.data).catch(err => err); 
+};
+
+/**
+ * 获取笔记列表 4003
+ */
+export const req_getNoteList = (notesId) => { 
+    return axios.get(api, {
+		params:{
+			notesId:notesId
+		},
+		headers:{
+			'method':'note/list',
+			'token'	: window.localStorage.getItem("token")
+		}
+	}).then(res => res.data).catch(err => err);  
+};
+/**
+ * 笔记重排序 4005
+ */
+export const req_noteReSort = (noteId,sort) => { 
+    return axios.post(api, {
+		noteId:noteId,
+		sort:sort
+    },{
+		headers:{
+			'method':'note/reSort',
+			'token'	: window.localStorage.getItem("token")
+		}
+	}).then(res => res.data).catch(err => err); 
+};

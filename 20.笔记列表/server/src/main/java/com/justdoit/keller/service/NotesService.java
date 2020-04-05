@@ -67,7 +67,7 @@ public class NotesService {
         return ResultData.success(list);
     }
 
-    private NotesInfo getByIdAndUserId(int id,int userId){
+    public NotesInfo getByIdAndUserId(int id,int userId){
         NotesInfo notesInfo = new NotesInfo(id);
         notesInfo = mapper.baseSelectById(notesInfo);
         if(notesInfo == null){
@@ -79,5 +79,8 @@ public class NotesService {
         return notesInfo;
     }
 
-
+    public void addNoteCount(NotesInfo notesInfo){
+        notesInfo.setNoteCount(notesInfo.getNoteCount() + 1);
+        mapper.baseUpdateById(notesInfo);
+    }
 }

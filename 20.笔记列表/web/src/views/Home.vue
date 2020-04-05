@@ -43,12 +43,11 @@
 			<el-container>
 				<!-- 左侧笔记本列表 -->
 				<el-aside width="14%" class="notes-list">
-
 					<NotesList @func="getNotes" ref="notesList"></NotesList>
 				</el-aside>
 				<!-- 中间笔记列表 -->
 				<el-aside width="21%" class="note-list">
-					
+					<NoteList @func="getNote" ref="noteList"></NoteList>
 				</el-aside>
 				<!-- 右侧笔记内容 -->
 				<el-main class="note-info">
@@ -110,7 +109,7 @@
 <script>
 	//引入笔记本列表组件
 	import NotesList from "../components/NotesList.vue";
-
+	import NoteList from "../components/NoteList.vue";
 	import {
 		format
 	} from "../data.js";
@@ -120,7 +119,7 @@
 	} from '../api';
 	export default {
 		components: {
-			NotesList
+			NotesList,NoteList
 		},
 		data() {
 			return {
@@ -128,7 +127,8 @@
 				mask: null,
 				uploadUrl: "upload",
 				imageUrl: '',
-				currentNotes: {}
+				currentNotes: {},
+				currentNote:{}
 			}
 		},
 		methods: {
@@ -138,10 +138,11 @@
 			 */
 			getNotes(notes) {
 				this.currentNotes = notes;
-				this.$notify.success({
-					title: notes.title,
-					message: notes.id
-				});
+				//加载笔记本中的笔记列表
+				this.$refs.noteList.load(notes.id);
+			},
+			getNote(note) {
+				
 			},
 			/**
 			 * 校验邮箱格式
@@ -293,8 +294,9 @@
 		padding-top: 10px;
 	}
 	.note-list{
-		background-color: #f8f8f8;
+		background-color: #ffffff;
 		min-width: 340px;
+		padding-top: 10px;
 	}
 	.note-info{
 		background-color: #f9f9f9;
