@@ -72,4 +72,63 @@ public class NoteController {
         }
         return Response.ok(service.reSort(kellerUserId,noteId,sort));
     }
+
+    /**
+     * 修改笔记，可修改：标题、排序、所属笔记本
+     * @param kellerUserId
+     * @param noteId
+     * @param notesId
+     * @param title
+     * @return
+     */
+    @PostMapping("/update")
+    public ResponseEntity update(Integer kellerUserId,Integer noteId,Integer notesId,String title){
+        if(StringUtils.isEmpty(kellerUserId,noteId) || StringUtils.noValue(notesId,title)){
+            return Response.badRequest();
+        }
+
+        NoteInfo noteInfo = new NoteInfo(kellerUserId,notesId,title);
+        noteInfo.setId(noteId);
+        return Response.ok(service.update(noteInfo));
+    }
+
+    /**
+     * 保存笔记内容
+     * @param kellerUserId
+     * @param noteId
+     * @param content
+     * @param contentMd
+     * @return
+     */
+    @PostMapping("/save")
+    public ResponseEntity save(Integer kellerUserId,Integer noteId,String content,String contentMd){
+        if(StringUtils.isEmpty(kellerUserId,noteId) || StringUtils.noValue(content,contentMd)){
+            return Response.badRequest();
+        }
+        NoteInfo noteInfo = new NoteInfo(noteId);
+        noteInfo.setUserId(kellerUserId);
+        noteInfo.setContent(content);
+        noteInfo.setContentMD(contentMd);
+        return Response.ok(service.save(noteInfo));
+    }
+
+    /**
+     * 读取笔记内容
+     * @param kellerUserId
+     * @param noteId
+     * @param type   0:content  1:contentMD
+     * @return
+     */
+    @GetMapping("/read")
+    public ResponseEntity read(Integer kellerUserId,Integer noteId,Integer type){
+        if(StringUtils.isEmpty(kellerUserId,noteId)){
+            return Response.badRequest();
+        }
+        if(type == null || type !=PublicConstant.NOTE_CONTENT_MD){
+            type = PublicConstant.NOTE_CONTENT;
+        }
+        return Response.ok(service.read(kellerUserId,noteId,type));
+    }
+
+
 }

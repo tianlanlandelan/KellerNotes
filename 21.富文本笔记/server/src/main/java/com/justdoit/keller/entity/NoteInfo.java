@@ -39,13 +39,13 @@ public class NoteInfo extends BaseEntity {
 
     @FieldAttribute("排序")
     @SortAttribute
-    private int sort;
+    private Integer sort;
 
     @FieldAttribute("笔记创建时间")
     private Date createTime = new Date();
 
     @FieldAttribute("是否删除 0:未删除 1:已删除")
-    private int isDelete;
+    private Integer isDelete;
 
     @FieldAttribute("最后一次修改时间")
     private Date updateTime;
@@ -127,11 +127,11 @@ public class NoteInfo extends BaseEntity {
         this.contentMD = contentMD;
     }
 
-    public int getSort() {
+    public Integer getSort() {
         return sort;
     }
 
-    public void setSort(int sort) {
+    public void setSort(Integer sort) {
         this.sort = sort;
     }
 
@@ -143,11 +143,11 @@ public class NoteInfo extends BaseEntity {
         this.createTime = createTime;
     }
 
-    public int getIsDelete() {
+    public Integer getIsDelete() {
         return isDelete;
     }
 
-    public void setIsDelete(int isDelete) {
+    public void setIsDelete(Integer isDelete) {
         this.isDelete = isDelete;
     }
 

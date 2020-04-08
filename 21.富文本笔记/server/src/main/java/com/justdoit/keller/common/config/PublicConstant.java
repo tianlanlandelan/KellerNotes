@@ -141,6 +141,10 @@ public class PublicConstant {
      */
     public static final int NOTE_TYPE_MARK_DOWN = 1;
 
+    public static final int NOTE_CONTENT = 0;
+
+    public static final int NOTE_CONTENT_MD = 1;
+
     /**
      * 用户id参数固定名称，不接收外部传入的用户id
      */

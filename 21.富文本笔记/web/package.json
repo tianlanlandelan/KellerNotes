@@ -13,7 +13,8 @@
     "element-ui": "^2.13.0",
     "vue": "^2.6.10",
     "vue-router": "^3.1.6",
-    "vuedraggable": "^2.23.2"
+    "vuedraggable": "^2.23.2",
+    "wangeditor": "^3.1.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.1.0",

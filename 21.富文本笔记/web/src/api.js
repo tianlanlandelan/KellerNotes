@@ -193,3 +193,35 @@ export const req_noteReSort = (noteId,sort) => {
 		}
 	}).then(res => res.data).catch(err => err); 
 };
+
+/**
+ * 获取笔记内容 4006
+ */
+export const req_getNoteContent = (noteId,type) => { 
+    return axios.get(api, {
+		params:{
+			noteId:noteId,
+			type:type
+		},
+		headers:{
+			'method':'note/read',
+			'token'	: window.localStorage.getItem("token")
+		}
+	}).then(res => res.data).catch(err => err);  
+};
+
+/**
+ * 设置笔记内容 4007
+ */
+export const req_setNoteContent = (noteId,content,contentMd) => { 
+    return axios.post(api, {
+		noteId:noteId,
+		content:content,
+		contentMD:contentMd
+    },{
+		headers:{
+			'method':'note/save',
+			'token'	: window.localStorage.getItem("token")
+		}
+	}).then(res => res.data).catch(err => err); 
+};

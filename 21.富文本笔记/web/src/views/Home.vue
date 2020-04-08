@@ -51,7 +51,7 @@
 				</el-aside>
 				<!-- 右侧笔记内容 -->
 				<el-main class="note-info">
-					
+					<Note ref="note"></Note>
 				</el-main>
 			</el-container>
 		</el-container>
@@ -110,6 +110,7 @@
 	//引入笔记本列表组件
 	import NotesList from "../components/NotesList.vue";
 	import NoteList from "../components/NoteList.vue";
+	import Note from "../components/Note.vue"
 	import {
 		format
 	} from "../data.js";
@@ -119,7 +120,7 @@
 	} from '../api';
 	export default {
 		components: {
-			NotesList,NoteList
+			NotesList,NoteList,Note
 		},
 		data() {
 			return {
@@ -127,8 +128,8 @@
 				mask: null,
 				uploadUrl: "upload",
 				imageUrl: '',
-				currentNotes: {},
-				currentNote:{}
+				//当前选中的笔记本
+				currentNotes: {}
 			}
 		},
 		methods: {
@@ -142,7 +143,7 @@
 				this.$refs.noteList.load(notes.id);
 			},
 			getNote(note) {
-				
+				this.$refs.note.load(note);
 			},
 			/**
 			 * 校验邮箱格式

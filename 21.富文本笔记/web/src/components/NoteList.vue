@@ -1,3 +1,4 @@
+<!-- 笔记列表 -->
 <template>
 	<div>
 		<draggable group="note" v-model="list" @change="noteListChange()">
@@ -6,7 +7,8 @@
 				<div :class="note.id == item.id ? 'note-bg':'cursorPointer '">
 					<el-row>
 						<el-col :span="2" :offset="1">
-							<i class="el-icon-document"></i>
+							<i v-if="item.type == 0" class="el-icon-document"></i>
+							<i v-else class="el-icon-collection-tag"></i>
 						</el-col>
 
 						<el-col :span="14">
@@ -15,10 +17,11 @@
 						<el-col :span="6">
 							{{format.formatDate(item.createTime)}}
 						</el-col>
+						<el-col :span="1" class="alignRight cursorPointer" v-show="note.id == item.id">
+							<i class="el-icon-delete" @click="handleDelete"></i>
+						</el-col>
 					</el-row>
-
 				</div>
-
 
 			</div>
 		</draggable>
@@ -49,7 +52,6 @@
 		methods: {
 			currentNote(note) {
 				this.note = note;
-				window.console.log(this.note.title);
 				this.func();
 			},
 			getNoteList(notesId) {
@@ -101,6 +103,10 @@
 						}
 					});
 				}
+			},
+			//删除笔记
+			handleDelete(){
+				
 			},
 			load(notesId) {
 				this.getNoteList(notesId);

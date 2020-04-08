@@ -83,4 +83,9 @@ public class NotesService {
         notesInfo.setNoteCount(notesInfo.getNoteCount() + 1);
         mapper.baseUpdateById(notesInfo);
     }
+
+    public void decrNoteCount(NotesInfo notesInfo){
+        notesInfo.setNoteCount(notesInfo.getNoteCount() - 1);
+        mapper.baseUpdateById(notesInfo);
+    }
 }

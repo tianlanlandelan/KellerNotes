@@ -1,5 +1,6 @@
 package com.justdoit.keller.service;
 
+import com.justdoit.keller.common.config.PublicConstant;
 import com.justdoit.keller.common.response.ResultData;
 import com.justdoit.keller.entity.NoteInfo;
 import com.justdoit.keller.entity.NotesInfo;
@@ -69,6 +70,68 @@ public class NoteService {
         noteInfo.setSort(sort);
         mapper.baseUpdateById(noteInfo);
         return ResultData.success();
+    }
+
+    /**
+     * 修改笔记，可修改：标题、排序、所属笔记本
+     * @param noteInfo
+     * @return
+     */
+    public ResultData update(NoteInfo noteInfo){
+
+        NoteInfo result = getByUserIdAndNoteId(noteInfo.getUserId(),noteInfo.getId());
+        if(result == null){
+            return ResultData.error("笔记不存在");
+        }
+
+        /*
+         * 如果设置了笔记本 ID ，且和原笔记本 ID 不同，表示要移动笔记本
+         * 此时，校验要移动到的笔记本是不是用户自己的笔记本
+         * 校验成功后移动笔记本，并修改原笔记本和新笔记本的笔记数量
+         */
+        if(noteInfo.getNotesId() != null && !noteInfo.getNotesId().equals(result.getNotesId())){
+            NotesInfo newNotes = notesService.getByIdAndUserId(noteInfo.getNotesId(),noteInfo.getUserId());
+            NotesInfo orderNotes= notesService.getByIdAndUserId(result.getNotesId(),result.getUserId());
+            if(newNotes == null || orderNotes == null){
+                return ResultData.error("笔记本不存在");
+            }
+            result.setNotesId(noteInfo.getNotesId());
+            if(mapper.baseUpdateById(result) == 1){
+                notesService.decrNoteCount(orderNotes);
+                notesService.addNoteCount(newNotes);
+            }
+        }
+        result.setSort(noteInfo.getSort());
+        result.setTitle(noteInfo.getTitle());
+        mapper.baseUpdateById(result);
+
+        return ResultData.success();
+    }
+
+    public ResultData save(NoteInfo noteInfo){
+        NoteInfo result = getByUserIdAndNoteId(noteInfo.getUserId(),noteInfo.getId());
+        if(result == null){
+            return ResultData.error("笔记本不存在");
+        }
+        result.setContent(noteInfo.getContent());
+        result.setContentMD(noteInfo.getContentMD());
+        mapper.baseUpdateById(result);
+
+        return  ResultData.success();
+    }
+
+    public ResultData read(int userId,int noteId,int type){
+        NoteInfo noteInfo = getByUserIdAndNoteId(userId, noteId);
+        if(noteInfo == null){
+            return ResultData.error("笔记本不存在");
+        }
+        String content;
+        if(type == PublicConstant.NOTE_CONTENT){
+            content = noteInfo.getContent();
+        }else{
+            content = noteInfo.getContentMD();
+        }
+        return ResultData.success(content);
     }
 
     public NoteInfo getByUserIdAndNoteId(int userId,int noteId){
