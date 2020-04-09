@@ -1,5 +1,6 @@
 package com.justdoit.keller.service;
 
+import com.justdoit.keller.common.config.PublicConstant;
 import com.justdoit.keller.common.response.ResultData;
 import com.justdoit.keller.entity.NotesInfo;
 import com.justdoit.keller.mapper.NotesMapper;
@@ -80,7 +81,21 @@ public class NotesService {
     }
 
     public void addNoteCount(NotesInfo notesInfo){
-        notesInfo.setNoteCount(notesInfo.getNoteCount() + 1);
+        int count = notesInfo.getNoteCount();
+        notesInfo.setNoteCount(++count < 0 ? 0 :count);
         mapper.baseUpdateById(notesInfo);
+    }
+
+    public void decrNoteCount(NotesInfo notesInfo){
+        int count = notesInfo.getNoteCount();
+        notesInfo.setNoteCount(--count < 0 ? 0 :count);
+        mapper.baseUpdateById(notesInfo);
+    }
+
+    public NotesInfo insertDefaultNotes(int userId){
+        NotesInfo notesInfo = new NotesInfo(userId,PublicConstant.DEFAULT_NOTES_NAME);
+        notesInfo.setStatus(PublicConstant.DEFAULT_NOTES_STATUS);
+        mapper.baseInsertAndReturnKey(notesInfo);
+        return notesInfo;
     }
 }

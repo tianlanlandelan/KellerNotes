@@ -115,6 +115,9 @@ public class PublicConstant {
 
     public static String webUrl;
 
+    public static final String DEFAULT_NOTES_NAME = "默认笔记本";
+    public static final int DEFAULT_NOTES_STATUS = 1;
+
     /**
      * 缩略图前缀名
      */
@@ -140,6 +143,10 @@ public class PublicConstant {
      * MarkDown 笔记类型
      */
     public static final int NOTE_TYPE_MARK_DOWN = 1;
+
+    public static final int NOTE_CONTENT_TEXT = 0;
+
+    public static final int NOTE_CONTENT_HTML = 1;
 
     /**
      * 用户id参数固定名称，不接收外部传入的用户id
