@@ -17,25 +17,25 @@ import javax.annotation.Resource;
  * @date 2020-04-03 15:09:09
  */
 @RestController
-@RequestMapping("/notes")
-public class NotesController {
-    @Resource
-    private NotesService service;
+    @RequestMapping("/notes")
+    public class NotesController {
+        @Resource
+        private NotesService service;
 
 
-    @PostMapping
-    public ResponseEntity add(Integer kellerUserId,String title,String subTitle,Integer sort){
-        if(StringUtils.isEmpty(kellerUserId,title)){
-            return Response.badRequest();
+        @PostMapping
+        public ResponseEntity add(Integer kellerUserId,String title,String subTitle,Integer sort){
+            if(StringUtils.isEmpty(kellerUserId,title)){
+                return Response.badRequest();
+            }
+            if(sort == null){
+                sort = 0;
+            }
+            NotesInfo notesInfo = new NotesInfo(kellerUserId,title);
+            notesInfo.setSubTitle(subTitle);
+            notesInfo.setSort(sort);
+            return Response.ok(service.save(notesInfo));
         }
-        if(sort == null){
-            sort = 0;
-        }
-        NotesInfo notesInfo = new NotesInfo(kellerUserId,title);
-        notesInfo.setSubTitle(subTitle);
-        notesInfo.setSort(sort);
-        return Response.ok(service.save(notesInfo));
-    }
 
     @PostMapping("/update")
     public ResponseEntity update(Integer kellerUserId,Integer id,String title,String subTitle,Integer sort){

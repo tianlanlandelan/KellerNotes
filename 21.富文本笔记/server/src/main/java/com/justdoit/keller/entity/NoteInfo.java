@@ -31,11 +31,11 @@ public class NoteInfo extends BaseEntity {
     @FieldAttribute("笔记标题")
     private String title;
 
-    @FieldAttribute(value = "笔记内容",length = 70000,detailed = true)
-    private String content;
+    @FieldAttribute(value = "纯文本笔记内容",length = 70000,detailed = true)
+    private String text;
 
-    @FieldAttribute(value = "MarkDown 笔记内容",length = 70000,detailed = true)
-    private String contentMD;
+    @FieldAttribute(value = "html格式的笔记内容",length = 70000,detailed = true)
+    private String html;
 
     @FieldAttribute("排序")
     @SortAttribute
@@ -111,20 +111,20 @@ public class NoteInfo extends BaseEntity {
         this.title = title;
     }
 
-    public String getContent() {
-        return content;
+    public String getText() {
+        return text;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setText(String text) {
+        this.text = text;
     }
 
-    public String getContentMD() {
-        return contentMD;
+    public String getHtml() {
+        return html;
     }
 
-    public void setContentMD(String contentMD) {
-        this.contentMD = contentMD;
+    public void setHtml(String html) {
+        this.html = html;
     }
 
     public Integer getSort() {
@@ -175,8 +175,8 @@ public class NoteInfo extends BaseEntity {
                 ", notesId=" + notesId +
                 ", type=" + type +
                 ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", contentMD='" + contentMD + '\'' +
+                ", text='" + text + '\'' +
+                ", html='" + html + '\'' +
                 ", sort=" + sort +
                 ", createTime=" + createTime +
                 ", isDelete=" + isDelete +

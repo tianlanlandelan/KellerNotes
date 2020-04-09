@@ -92,6 +92,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
+        <finalName>kellerNotes</finalName>
     </build>
 
 </project>

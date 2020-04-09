@@ -1,11 +1,7 @@
 package com.justdoit.keller;
 
-import com.justdoit.keller.entity.NoteInfo;
-import com.justdoit.keller.entity.NotesInfo;
-import com.justdoit.keller.entity.UserCard;
-import com.justdoit.keller.mapper.NoteMapper;
-import com.justdoit.keller.mapper.NotesMapper;
-import com.justdoit.keller.mapper.UserCardMapper;
+import com.justdoit.keller.entity.*;
+import com.justdoit.keller.mapper.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -14,8 +10,21 @@ import javax.annotation.Resource;
 @SpringBootTest
 class KellerApplicationTests {
 
+
+    @Resource
+    private UserMapper userMapper;
+
     @Test
-    void contextLoads() {
+    public void createUserInfoTable(){
+        userMapper.baseCreate(new UserInfo());
+    }
+
+    @Resource
+    private EmailMapper emailMapper;
+
+    @Test
+    public void createEmailTable(){
+        emailMapper.baseCreate(new EmailLog());
     }
 
     @Resource

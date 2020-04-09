@@ -26,6 +26,9 @@ public class UserService {
     @Resource
     private UserCardMapper userCardMapper;
 
+    @Resource
+    private NotesService notesService;
+
     /**
      * 发送邮件验证码
       * @param userType 用户类型
@@ -194,13 +197,20 @@ public class UserService {
     }
 
 
-
+    /**
+     * 添加用户，同时设置默认笔记本
+     * @param userInfo
+     * @return
+     */
     private UserInfo insert(UserInfo userInfo){
         UserInfo user = getByEmailAndType(userInfo.getType(),userInfo.getEmail());
         if(user != null){
             return null;
         }
-        userMapper.baseInsertAndReturnKey(userInfo);
+        Integer result = userMapper.baseInsertAndReturnKey(userInfo);
+        if(result == 1){
+            notesService.insertDefaultNotes(userInfo.getId());
+        }
         return userInfo;
     }
 }

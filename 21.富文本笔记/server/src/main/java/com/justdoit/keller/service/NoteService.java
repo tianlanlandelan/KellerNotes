@@ -5,7 +5,6 @@ import com.justdoit.keller.common.response.ResultData;
 import com.justdoit.keller.entity.NoteInfo;
 import com.justdoit.keller.entity.NotesInfo;
 import com.justdoit.keller.mapper.NoteMapper;
-import com.justdoit.keller.mapper.NotesMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -113,8 +112,8 @@ public class NoteService {
         if(result == null){
             return ResultData.error("笔记本不存在");
         }
-        result.setContent(noteInfo.getContent());
-        result.setContentMD(noteInfo.getContentMD());
+        result.setText(noteInfo.getText());
+        result.setHtml(noteInfo.getHtml());
         mapper.baseUpdateById(result);
 
         return  ResultData.success();
@@ -126,14 +125,21 @@ public class NoteService {
             return ResultData.error("笔记本不存在");
         }
         String content;
-        if(type == PublicConstant.NOTE_CONTENT){
-            content = noteInfo.getContent();
+        if(type == PublicConstant.NOTE_CONTENT_TEXT){
+            content = noteInfo.getText();
         }else{
-            content = noteInfo.getContentMD();
+            content = noteInfo.getHtml();
         }
         return ResultData.success(content);
     }
 
+    public ResultData get(int userId,int noteId){
+        NoteInfo noteInfo = getByUserIdAndNoteId(userId, noteId);
+        if(noteInfo == null){
+            return ResultData.error("笔记本不存在");
+        }
+        return ResultData.success(noteInfo);
+    }
     public NoteInfo getByUserIdAndNoteId(int userId,int noteId){
         NoteInfo noteInfo = new NoteInfo(noteId);
         noteInfo = mapper.baseSelectById(noteInfo);
