@@ -29,7 +29,7 @@
 		<div v-show="visible" class="box"></div>
 		<!-- 操作 -->
 		<div v-show="visible" class="boxLittle">
-			<!-- 新建笔记 -->
+			<!-- 新建富文本笔记 -->
 			<el-form label-position="left" label-width="0px" v-show="status == 'addRichNote'">
 				<el-form-item>
 					<el-row>
@@ -52,6 +52,28 @@
 				</el-form-item>
 			</el-form>
 
+			<!-- 新建MarkDown笔记 -->
+			<el-form label-position="left" label-width="0px" v-show="status == 'addMarkDownNote'">
+				<el-form-item>
+					<el-row>
+						<el-col :span="16" :offset="4" class="alignCenter font24 font-bold">
+							新建 MarkDown 笔记
+						</el-col>
+						<el-col :span="4" class="alignRight">
+							<i class="el-icon-circle-close font24" @click="visible = false"></i>
+						</el-col>
+					</el-row>
+					<span class="tip">笔记本名称</span>
+					<el-input type="text" v-model="notes.title" disabled></el-input>
+				</el-form-item>
+				<el-form-item style="width:100%;">
+					<span class="tip">笔记名称</span>
+					<el-input type="text" autofocus v-model="noteTitle"></el-input>
+				</el-form-item>
+				<el-form-item style="width:100%;">
+					<el-button type="primary" style="width:100%;" @click="addNote(1)">新建</el-button>
+				</el-form-item>
+			</el-form>
 			<!-- 新建笔记本 -->
 			<el-form label-position="left" label-width="0px" v-show="status == 'addNotes'">
 				<el-form-item>

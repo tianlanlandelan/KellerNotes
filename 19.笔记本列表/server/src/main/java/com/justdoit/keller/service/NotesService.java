@@ -1,5 +1,6 @@
 package com.justdoit.keller.service;
 
+import com.justdoit.keller.common.config.PublicConstant;
 import com.justdoit.keller.common.response.ResultData;
 import com.justdoit.keller.entity.NotesInfo;
 import com.justdoit.keller.mapper.NotesMapper;
@@ -49,6 +50,9 @@ public class NotesService {
         if(notesInfo == null){
             return ResultData.error("笔记本不存在");
         }
+        if(notesInfo.getStatus() == PublicConstant.DEFAULT_NOTES_STATUS){
+            return ResultData.error("用户默认笔记本不可删除");
+        }
         mapper.baseDeleteById(notesInfo);
         return ResultData.success();
     }
@@ -76,6 +80,13 @@ public class NotesService {
         if(userId != notesInfo.getUserId()){
             return null;
         }
+        return notesInfo;
+    }
+
+    public NotesInfo insertDefaultNotes(int userId){
+        NotesInfo notesInfo = new NotesInfo(userId,PublicConstant.DEFAULT_NOTES_NAME);
+        notesInfo.setStatus(PublicConstant.DEFAULT_NOTES_STATUS);
+        mapper.baseInsertAndReturnKey(notesInfo);
         return notesInfo;
     }
 

@@ -28,19 +28,20 @@
 			</el-col>
 
 		</el-row>
-
 		<!-- 仅在富文本笔记的编辑模式中使用 WandEditor -->
-		<WangEditor v-show="editMode && note.type == 0" @func="setContent" ref="wangEditor"></WangEditor>
+		<WangEditor v-show="editMode && note.type == 0" ref="wangEditor"></WangEditor>
 
 		<!-- 阅读模式 -->
-		<div v-show="!editMode" class="ColorMain" v-html="content"></div>
+		<div v-show="!editMode" class="ColorMain" v-html="html"></div>
 	</div>
 </template>
 
 <script>
-	import WangEditor from "../components/WangEditor.vue"
+	import WangEditor from "./WangEditor.vue"
+	
+	
 	import {
-		req_getNoteContent,
+		req_getNoteInfoById,
 		req_setNoteContent
 	} from "../api.js";
 	export default {
@@ -52,8 +53,8 @@
 				//编辑模式
 				editMode: false,
 				note: {},
-				content: "",
-				contentMd: ""
+				text: "",
+				html: ""
 			}
 		},
 		methods: {
@@ -61,17 +62,18 @@
 			init() {
 				this.editMode = false;
 				this.note = {};
-				this.content = "";
-				this.contentMd = "";
+				this.text = "";
+				this.html = "";
 			},
 			/**
-			 * 切换到编辑模式，加载markdown编辑器
+			 * 切换到编辑模式，加载编辑器
 			 */
 			handleEdit() {
 				this.editMode = true;
-
+				
+				//富文本笔记加载 WangEditor
 				if (this.note.type == 0) {
-					this.$refs.wangEditor.load(this.content);
+					this.$refs.wangEditor.load(this.html);
 				}
 			},
 			/**
@@ -88,34 +90,49 @@
 				this.editMode = false;
 
 			},
-			// WangEditor 中内容发生变化时重新设置内容
-			setContent(content) {
-				this.content = content;
-			},
 			handleSave() {
-				this.content = this.$refs.wangEditor.get();
-				req_setNoteContent(this.note.id, this.content).then(response => {
-					let {
-						success,
-						message
-					} = response;
-					//应答不成功，提示错误信息
-					if (success !== 0) {
-						this.$message({
-							message: message,
-							type: 'error'
-						});
-					} else {
-						this.$notify({
-							title: '保存成功',
-							type: 'success'
-						});
-					}
-				});
+				let newText;
+				let newHtml;
+				if(this.note.type == 0){
+					newText = this.$refs.wangEditor.getText();
+					newHtml = this.$refs.wangEditor.getHtml();
+				}else {
+					return;
+				}
+				//如果笔记内容有变化，保存
+				if(this.html !== newHtml){
+					req_setNoteContent(this.note.id, newText,newHtml).then(response => {
+						let {
+							success,
+							message
+						} = response;
+						//应答不成功，提示错误信息
+						if (success !== 0) {
+							this.$message({
+								message: message,
+								type: 'error'
+							});
+						} else {
+							this.$notify({
+								title: '保存成功',
+								type: 'success'
+							});
+							this.text = newText;
+							this.html = newHtml;
+						}
+					});
+				}else{
+				//笔记内容无变化，直接提示保存成功
+					this.$notify({
+						title: '保存成功',
+						type: 'success'
+					});
+				}
+				
 			},
 			// 获取笔记内容
-			getContent() {
-				req_getNoteContent(this.note.id).then(response => {
+			getNoteInfo() {
+				req_getNoteInfoById(this.note.id).then(response => {
 					let {
 						success,
 						message,
@@ -128,19 +145,23 @@
 							type: 'error'
 						});
 					} else {
-						if (data) {
-							this.content = data;
+						if (data.text) {
+							this.text = data.text;
 						} else {
-							this.content = "";
+							this.text = "";
 						}
-
+						if(data.html){
+							this.html = data.html;
+						}else{
+							this.html = "";
+						}
 					}
 				});
 			},
 			load(note) {
 				this.init();
 				this.note = note;
-				this.getContent();
+				this.getNoteInfo();
 			}
 		},
 		mounted() {

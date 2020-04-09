@@ -16,11 +16,14 @@
 			}
 		},
 		methods: {
-			get(){
+			getText(){
+				return this.editor.txt.text();
+			},
+			getHtml(){
 				return this.editor.txt.html();
 			},
-			load(content){
-				this.editor.txt.html(content);
+			load(html){
+				this.editor.txt.html(html);
 			}
 		},
 		mounted() {

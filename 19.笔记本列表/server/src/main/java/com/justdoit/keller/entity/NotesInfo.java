@@ -45,6 +45,9 @@ public class NotesInfo extends BaseEntity {
     @FieldAttribute("最后修改人")
     private Integer updateUserId;
 
+    @FieldAttribute("笔记本状态 1 默认笔记本")
+    private int status;
+
     public NotesInfo() {
     }
 
@@ -137,6 +140,14 @@ public class NotesInfo extends BaseEntity {
         this.updateUserId = updateUserId;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "NotesInfo{" +
@@ -150,6 +161,7 @@ public class NotesInfo extends BaseEntity {
                 ", isDelete=" + isDelete +
                 ", updateTime=" + updateTime +
                 ", updateUserId=" + updateUserId +
+                ", status=" + status +
                 '}';
     }
 }

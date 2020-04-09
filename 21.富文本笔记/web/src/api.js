@@ -197,14 +197,13 @@ export const req_noteReSort = (noteId,sort) => {
 /**
  * 获取笔记内容 4006
  */
-export const req_getNoteContent = (noteId,type) => { 
+export const req_getNoteInfoById = (noteId) => { 
     return axios.get(api, {
 		params:{
-			noteId:noteId,
-			type:type
+			noteId:noteId
 		},
 		headers:{
-			'method':'note/read',
+			'method':'note',
 			'token'	: window.localStorage.getItem("token")
 		}
 	}).then(res => res.data).catch(err => err);  
@@ -213,11 +212,11 @@ export const req_getNoteContent = (noteId,type) => {
 /**
  * 设置笔记内容 4007
  */
-export const req_setNoteContent = (noteId,content,contentMd) => { 
+export const req_setNoteContent = (noteId,text,html) => { 
     return axios.post(api, {
 		noteId:noteId,
-		content:content,
-		contentMD:contentMd
+		text:text,
+		html:html
     },{
 		headers:{
 			'method':'note/save',
