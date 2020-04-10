@@ -9,6 +9,13 @@ let base = url + 'base';
 
 let upload = url + 'upload';
 
+let editorImgUploadUrl = url + "upload/img";
+
+export{
+	editorImgUploadUrl,
+	upload
+}
+
 /**
  * 获取注册验证码 1001
  */

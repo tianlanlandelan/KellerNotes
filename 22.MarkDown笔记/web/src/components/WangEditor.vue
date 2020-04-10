@@ -9,6 +9,10 @@
 
 <script>
 	import Editor from 'wangeditor';
+	
+	import {
+		editorImgUploadUrl
+	} from "../api.js";
 	export default {
 		data() {
 			return {
@@ -29,7 +33,7 @@
 		mounted() {
 			let editor = this.editor;
 			editor.customConfig.uploadFileName = "file";
-			editor.customConfig.uploadImgServer = "/upload/img";
+			editor.customConfig.uploadImgServer = editorImgUploadUrl;
 			editor.customConfig.uploadImgParams = {
 				token: window.localStorage.getItem("token")
 			};

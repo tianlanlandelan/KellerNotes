@@ -77,7 +77,7 @@
 					this.$refs.wangEditor.load(this.html);
 				}
 				// MarkDown 笔记加载 mavon-editor
-				else if(this.note.typr == 1){
+				else if(this.note.type == 1){
 					this.$refs.markDown.load(this.text,this.html);
 				}
 			},
