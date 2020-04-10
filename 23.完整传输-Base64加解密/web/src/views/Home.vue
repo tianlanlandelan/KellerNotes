@@ -116,7 +116,8 @@
 	} from "../data.js";
 	import {
 		req_getUserCard,
-		req_setUserCard
+		req_setUserCard,
+		upload
 	} from '../api';
 	export default {
 		components: {
@@ -126,7 +127,7 @@
 			return {
 				user: {},
 				mask: null,
-				uploadUrl: "upload",
+				uploadUrl: upload,
 				imageUrl: '',
 				//当前选中的笔记本
 				currentNotes: {}

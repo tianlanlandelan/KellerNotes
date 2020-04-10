@@ -10,6 +10,9 @@
 	} from 'mavon-editor';
 	import 'mavon-editor/dist/css/index.css';
 	import axios from 'axios';
+	import {
+		editorImgUploadUrl
+	} from "../api.js";
 	export default {
 
 		// 注册
@@ -19,35 +22,32 @@
 		data() {
 			return {
 				value: "",
-				rander: ""
+				render: ""
 			}
 		},
 		methods: {
 			// 将图片上传到服务器，返回地址替换到md中
 			imgAdd(pos, $file) {
-				let formdata = new FormData();
+				
 				/**
 				 * 服务端接口用 MultipartFile file 参数接收的，此处用formdata.append('file', $file)传
 				 */
+				let formdata = new FormData();
 				formdata.append('file', $file);
 				formdata.append('token', window.localStorage.getItem("token"));
-
-				axios.post('/upload/img',
+				
+				axios.post(editorImgUploadUrl, 
 					formdata
-					// {
-					// file: $file,
-					// token:window.localStorage.getItem("token")
-					// }
-					, {
-						headers: {
-							'Content-Type': 'multipart/form-data'
-						}
-					}).then(response => {
+				, {
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					}
+				}).then(response => {
 					let {
 						success,
 						message,
 						data
-					} = response;
+					} = response.data;
 
 					//应答不成功，提示错误信息
 					if (success !== 0) {
@@ -76,16 +76,23 @@
 				 */
 				// this.$emit('func',value,render);
 			},
+			/**
+			 * 获取文本内容
+			 */
 			getText() {
-				return this.content;
+				return this.value;
 			},
+			/**
+			 * 获取解析后的 Html 内容
+			 */
 			getHtml() {
 				return this.render;
 			},
-			//设置 render 的值是为了保证当编辑器内容没有变化时能取到原来的值
+			//设置 rander 的值是为了保证当编辑器内容没有变化时能取到原来的值
 			load(value, render) {
 				this.value = value;
 				this.render = render;
+				window.console.log(value,render);
 			}
 		},
 		mounted() {
