@@ -119,19 +119,6 @@ public class NoteService {
         return  ResultData.success();
     }
 
-    public ResultData read(int userId,int noteId,int type){
-        NoteInfo noteInfo = getByUserIdAndNoteId(userId, noteId);
-        if(noteInfo == null){
-            return ResultData.error("笔记本不存在");
-        }
-        String content;
-        if(type == PublicConstant.NOTE_CONTENT_TEXT){
-            content = noteInfo.getText();
-        }else{
-            content = noteInfo.getHtml();
-        }
-        return ResultData.success(content);
-    }
 
     public ResultData get(int userId,int noteId){
         NoteInfo noteInfo = getByUserIdAndNoteId(userId, noteId);
@@ -140,6 +127,16 @@ public class NoteService {
         }
         return ResultData.success(noteInfo);
     }
+
+    public ResultData del(int userId,int noteId){
+        NoteInfo noteInfo = getByUserIdAndNoteId(userId, noteId);
+        if(noteInfo == null){
+            return ResultData.error("笔记本不存在");
+        }
+        mapper.baseDeleteById(noteInfo);
+        return ResultData.success();
+    }
+
     public NoteInfo getByUserIdAndNoteId(int userId,int noteId){
         NoteInfo noteInfo = new NoteInfo(noteId);
         noteInfo = mapper.baseSelectById(noteInfo);

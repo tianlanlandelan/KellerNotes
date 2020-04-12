@@ -36,7 +36,8 @@
 	import {
 		
 		req_getNoteList,
-		req_noteReSort
+		req_noteReSort,
+		req_delNote
 	} from "../api.js";
 	export default {
 		components: {
@@ -106,7 +107,24 @@
 			},
 			//删除笔记
 			handleDelete(){
-				
+				req_delNote(this.note.id).then(response =>{
+					let {
+						success,
+						message
+					} = response;
+					if(success !== 0){
+						this.$message({
+							message: message,
+							type: 'error'
+						});
+					}else{
+						this.$notify({
+							title: '删除成功',
+							type: 'success'
+						});
+						this.load(this.note.notesId);
+					}
+				});
 			},
 			load(notesId) {
 				this.getNoteList(notesId);

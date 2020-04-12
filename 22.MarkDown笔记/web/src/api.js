@@ -231,3 +231,17 @@ export const req_setNoteContent = (noteId,text,html) => {
 		}
 	}).then(res => res.data).catch(err => err); 
 };
+
+/**
+ * 删除笔记 4008
+ */
+export const req_delNote = (noteId) => { 
+    return axios.post(api, {
+		noteId:noteId,
+    },{
+		headers:{
+			'method':'note/del',
+			'token'	: window.localStorage.getItem("token")
+		}
+	}).then(res => res.data).catch(err => err); 
+};

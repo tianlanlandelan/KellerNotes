@@ -33,7 +33,7 @@
 
 		<MarkDown v-show = "editMode && note.type == 1" ref = "markDown"></MarkDown>
 		<!-- 阅读模式 -->
-		<div v-show="!editMode" class="ColorMain" v-html="html"></div>
+		<div v-show="!editMode" class="ColorMain" v-html="note.html"></div>
 	</div>
 </template>
 
@@ -53,9 +53,7 @@
 			return {
 				//编辑模式
 				editMode: false,
-				note: {},
-				text: "",
-				html: ""
+				note: {}
 			}
 		},
 		methods: {
@@ -63,8 +61,6 @@
 			init() {
 				this.editMode = false;
 				this.note = {};
-				this.text = "";
-				this.html = "";
 			},
 			/**
 			 * 切换到编辑模式，加载编辑器
@@ -74,26 +70,19 @@
 				
 				//富文本笔记加载 WangEditor
 				if (this.note.type == 0) {
-					this.$refs.wangEditor.load(this.html);
+					this.$refs.wangEditor.load(this.note.html);
 				}
 				// MarkDown 笔记加载 mavon-editor
 				else if(this.note.type == 1){
-					this.$refs.markDown.load(this.text,this.html);
+					this.$refs.markDown.load(this.note.text,this.note.html);
 				}
-			},
-			/**
-			 * 删除笔记
-			 */
-			handleDelete() {
-				this.editMode = false;
-				this.show = false;
 			},
 			/**
 			 * 切换到阅读模式
 			 */
 			handleView() {
 				this.editMode = false;
-
+				this.handleSave();
 			},
 			handleSave() {
 				let newText;
@@ -108,7 +97,7 @@
 					return;
 				}
 				//如果笔记内容有变化，保存
-				if(this.html !== newHtml){
+				if(this.note.html !== newHtml){
 					req_setNoteContent(this.note.id, newText,newHtml).then(response => {
 						let {
 							success,
@@ -125,8 +114,8 @@
 								title: '保存成功',
 								type: 'success'
 							});
-							this.text = newText;
-							this.html = newHtml;
+							this.note.text = newText;
+							this.note.html = newHtml;
 						}
 					});
 				}else{
@@ -154,14 +143,14 @@
 						});
 					} else {
 						if (data.text) {
-							this.text = data.text;
+							this.note.text = data.text;
 						} else {
-							this.text = "";
+							this.note.text = "";
 						}
 						if(data.html){
-							this.html = data.html;
+							this.note.html = data.html;
 						}else{
-							this.html = "";
+							this.note.html = "";
 						}
 					}
 				});

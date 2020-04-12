@@ -96,14 +96,20 @@ public class NoteController {
      * 保存笔记内容
      * @param kellerUserId  必填
      * @param noteId        必填
-     * @param text          纯文本内容 （text 和 html 至少有一个）
+     * @param text          纯文本内容
      * @param html          Html 内容
      * @return
      */
     @PostMapping("/save")
     public ResponseEntity save(Integer kellerUserId,Integer noteId,String text,String html){
-        if(StringUtils.isEmpty(kellerUserId,noteId) || StringUtils.noValue(text,html)){
+        if(StringUtils.isEmpty(kellerUserId,noteId) ){
             return Response.badRequest();
+        }
+        if(text == null){
+            text = "";
+        }
+        if(html == null){
+            html = "";
         }
         NoteInfo noteInfo = new NoteInfo(noteId);
         noteInfo.setUserId(kellerUserId);
@@ -112,30 +118,26 @@ public class NoteController {
         return Response.ok(service.save(noteInfo));
     }
 
+
     /**
-     * 读取笔记内容
-     * @param kellerUserId
-     * @param noteId
-     * @param type   0:content  1:contentMD
+     * 获取笔记详情
+     * @param kellerUserId  从 JWT 中解析到的用户 ID
+     * @param noteId    用户的笔记 ID
      * @return
      */
-    @GetMapping("/read")
-    public ResponseEntity read(Integer kellerUserId,Integer noteId,Integer type){
-        if(StringUtils.isEmpty(kellerUserId,noteId)){
-            return Response.badRequest();
-        }
-        if(type == null || type !=PublicConstant.NOTE_CONTENT_HTML){
-            type = PublicConstant.NOTE_CONTENT_TEXT;
-        }
-        return Response.ok(service.read(kellerUserId,noteId,type));
-    }
-
-
     @GetMapping
     public ResponseEntity get(Integer kellerUserId,Integer noteId){
         if(StringUtils.isEmpty(kellerUserId,noteId)){
             return Response.badRequest();
         }
         return Response.ok(service.get(kellerUserId,noteId));
+    }
+
+    @PostMapping("/del")
+    public ResponseEntity del(Integer kellerUserId,Integer noteId){
+        if(StringUtils.isEmpty(kellerUserId,noteId)){
+            return Response.badRequest();
+        }
+        return Response.ok(service.del(kellerUserId,noteId));
     }
 }
