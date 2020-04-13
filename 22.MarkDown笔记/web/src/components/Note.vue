@@ -31,7 +31,7 @@
 		<!-- 仅在富文本笔记的编辑模式中使用 WandEditor -->
 		<WangEditor v-show="editMode && note.type == 0" ref="wangEditor"></WangEditor>
 
-		<MarkDown v-show = "editMode && note.type == 1" ref = "markDown"></MarkDown>
+		<MarkDown v-show = "editMode && note.type == 1" ref = "markDown" @func="handleSave"></MarkDown>
 		<!-- 阅读模式 -->
 		<div v-show="!editMode" class="ColorMain" v-html="note.html"></div>
 	</div>

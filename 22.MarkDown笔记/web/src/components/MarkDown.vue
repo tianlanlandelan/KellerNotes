@@ -1,7 +1,7 @@
 <!-- 将mavon-editor组件包装下，作为markdown编辑器插件 -->
 <template>
 	<div>
-		<mavon-editor v-model="value" ref="md" @imgAdd="imgAdd" @change="change" style="min-height: 600px" />
+		<mavon-editor v-model="value" ref="md" @imgAdd="imgAdd" @change="change" @save="save" style="min-height: 600px" />
 	</div>
 </template>
 <script>
@@ -77,6 +77,17 @@
 				// this.$emit('func',value,render);
 			},
 			/**
+			 * Ctrl + S 触发的操作
+			 * @param {Object} value
+			 * @param {Object} render
+			 */
+			save(value, render) {
+				// render 为 markdown 解析后的结果[htmlStr]
+				this.value = value;
+				this.render = render;
+				this.func();
+			},
+			/**
 			 * 获取文本内容
 			 */
 			getText() {
@@ -92,7 +103,9 @@
 			load(value, render) {
 				this.value = value;
 				this.render = render;
-				window.console.log(value,render);
+			},
+			func() {
+				this.$emit('func');
 			}
 		},
 		mounted() {

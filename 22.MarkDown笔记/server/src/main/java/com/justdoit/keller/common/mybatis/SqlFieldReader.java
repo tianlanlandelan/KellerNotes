@@ -383,14 +383,6 @@ public class SqlFieldReader {
         try {
             Class cls = entity.getClass();
             Method method = cls.getMethod("get" + StringUtils.captureName(fieldName));
-            Object value = method.invoke(entity);
-            //如果是字符串，需要判断是不是空格字符
-            if(value instanceof String){
-                if (value == null || ((String) value).trim().isEmpty()){
-                    return false;
-                }
-                return true;
-            }
             if(method.invoke(entity) == null){
                 return false;
             }else {

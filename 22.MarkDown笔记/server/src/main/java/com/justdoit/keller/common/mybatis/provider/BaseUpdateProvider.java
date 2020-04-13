@@ -47,7 +47,6 @@ public class BaseUpdateProvider {
      * @return UPDATE 表名 SET
      */
     private static <T extends BaseEntity> String getUpdatePrefix(T entity){
-        Class cls = entity.getClass();
         StringBuilder builder = new StringBuilder();
         builder.append("UPDATE ").append(SqlFieldReader.getTableName(entity)).append(" SET ");
         List<String> fields = SqlFieldReader.getFields(entity);

@@ -8,6 +8,7 @@ import com.justdoit.keller.mapper.NoteMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -114,6 +115,8 @@ public class NoteService {
         }
         result.setText(noteInfo.getText());
         result.setHtml(noteInfo.getHtml());
+        result.setUpdateUserID(noteInfo.getUserId());
+        result.setUpdateTime(new Date());
         mapper.baseUpdateById(result);
 
         return  ResultData.success();
