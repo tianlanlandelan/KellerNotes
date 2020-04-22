@@ -1,9 +1,9 @@
 import axios from 'axios';
-// let url = "http://127.0.0.1:8088/";
-let url = "https://47.93.84.8/";
+let url = "http://127.0.0.1:8088/";
+// let url = "https://47.93.84.8/";
 /** 需要先登录再访问的路由 */
 let api = url + 'api';
-let form = url + "form"
+
 
 /** 不需要登录就能访问的路由 */
 let base = url + 'base';
@@ -246,3 +246,19 @@ export const req_delNote = (noteId) => {
 		}
 	}).then(res => res.data).catch(err => err); 
 };
+
+/**
+ * 删除笔记 4009
+ */
+export const req_delNoteImg = (imgName) => { 
+    return axios.post(api, {
+		imgName:imgName,
+    },{
+		headers:{
+			'method':'note/delImg',
+			'token'	: window.localStorage.getItem("token")
+		}
+	}).then(res => res.data).catch(err => err); 
+};
+
+
