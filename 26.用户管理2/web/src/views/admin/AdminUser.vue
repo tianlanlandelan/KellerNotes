@@ -70,7 +70,6 @@
 				this.pagination.size = 5;
 			},
 			formatType(row,column){
-				window.console.log("formatType",row,column);
 				return row.type == 0 ? '普通用户' : row.type == 100 ? '管理员' : '未知';
 			},
 			/**
