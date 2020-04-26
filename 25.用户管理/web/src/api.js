@@ -47,7 +47,8 @@ export const req_register = (user) => {
 export const req_logon = (user) => { 
     return axios.post(base + '/login', {
         email:user.email,
-		password:user.password
+		password:user.password,
+		type:user.type
     }).then(res => res.data).catch(err => err); 
 };
 
@@ -262,3 +263,34 @@ export const req_delNoteImg = (imgName) => {
 };
 
 
+/**
+ * 获取用户列表 5002
+ */
+export const req_getUserList = (page,size,email) => { 
+    return axios.get(api, {
+		params:{
+			page:page,
+			size:size,
+			email:email
+		},
+		headers:{
+			'method':'admin/userList',
+			'token'	: window.sessionStorage.getItem("adminToken")
+		}
+	}).then(res => res.data).catch(err => err);  
+};
+
+/**
+ * 获取用户总数 5007
+ */
+export const req_getUserCounter = (email) => { 
+    return axios.get(api, {
+		params:{
+			email:email
+		},
+		headers:{
+			'method':'admin/userCounter',
+			'token'	: window.sessionStorage.getItem("adminToken")
+		}
+	}).then(res => res.data).catch(err => err);  
+};

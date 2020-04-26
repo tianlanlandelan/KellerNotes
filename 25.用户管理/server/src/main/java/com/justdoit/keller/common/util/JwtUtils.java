@@ -96,12 +96,15 @@ public class JwtUtils {
      * @param jwtString
      * @return
      */
-    public static Integer getUserIdFromLogin(String jwtString){
+    public static UserInfo getUserFromLogin(String jwtString){
         Claims claims = getClaims(jwtString,PublicConstant.LOGIN_TYPE);
         if(claims == null){
             return null;
         }
-        return Integer.parseInt(claims.getId());
+        UserInfo userInfo = new UserInfo(Integer.parseInt(claims.getId()));
+        userInfo.setEmail(claims.get(userNameKey,String.class));
+        userInfo.setType(claims.get(userTypeKey,Integer.class));
+        return userInfo;
     }
 
     /**

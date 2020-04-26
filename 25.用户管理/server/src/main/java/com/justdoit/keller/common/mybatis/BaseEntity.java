@@ -10,7 +10,7 @@ package com.justdoit.keller.common.mybatis;
  */
 public class BaseEntity {
     /**
-     * 是否查询明细字段
+     * 是否查询明细字段，默认查询明细字段
      */
     private boolean baseKyleDetailed = true;
     /**
@@ -18,9 +18,9 @@ public class BaseEntity {
      */
     private Boolean baseKyleUseAnd = true;
     /**
-     * 是否按排序关键字升序排列
+     * 是否按排序关键字升序排列，默认不指定排序方式
      */
-    private Boolean baseKyleUseASC = true;
+    private Boolean baseKyleUseASC = null;
     /**
      * 页面大小
      */
@@ -33,6 +33,12 @@ public class BaseEntity {
      * 根据页面大小和要查询的页码计算出的起始行号
      */
     private int baseKyleStartRows ;
+
+    /**
+     * 自定义查询条件,指定自定义查询条件后，执行查询语句时，只会选择自定义的查询条件执行，忽略其他条件
+     */
+    private String baseKyleCustomCondition = null;
+
     public Boolean getBaseKyleUseAnd() {
         return baseKyleUseAnd;
     }
@@ -81,5 +87,13 @@ public class BaseEntity {
 
     public void setBaseKyleDetailed(boolean baseKyleDetailed) {
         this.baseKyleDetailed = baseKyleDetailed;
+    }
+
+    public String getBaseKyleCustomCondition() {
+        return baseKyleCustomCondition;
+    }
+
+    public void setBaseKyleCustomCondition(String baseKyleCustomCondition) {
+        this.baseKyleCustomCondition = baseKyleCustomCondition;
     }
 }

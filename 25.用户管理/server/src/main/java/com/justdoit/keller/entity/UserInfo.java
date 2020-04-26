@@ -15,27 +15,23 @@ public class UserInfo   extends BaseEntity {
     @FieldAttribute
     private int id;
 
-    @FieldAttribute(value = "用户类型",notNull = true)
-    @IndexAttribute
+    @FieldAttribute(value = "用户类型",notNull = true,isCondition = true)
     private Integer type;
 
 
-    @FieldAttribute(value = "密码",length = 200)
+    @FieldAttribute(value = "密码",length = 200, isDetailed = true)
     private String password;
 
-    @FieldAttribute(value = "邮箱",notNull = true,length = 200)
-    @IndexAttribute
+    @FieldAttribute(value = "邮箱",notNull = true,length = 200,isIndex = true)
     private String email;
 
     @FieldAttribute
     private Date createTime = new Date();
 
-    @FieldAttribute("用户账号状态")
-    @IndexAttribute
+    @FieldAttribute(value = "用户账号状态",isCondition = true)
     private Integer status ;
 
-    @FieldAttribute("是否删除，1 表示删除")
-    @IndexAttribute
+    @FieldAttribute(value = "是否删除，1 表示删除",isCondition = true)
     private Integer isDelete;
 
     @FieldAttribute("最后一次修改时间")

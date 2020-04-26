@@ -67,7 +67,7 @@ public class NotesService {
         NotesInfo notesInfo = new NotesInfo();
         notesInfo.setUserId(userId);
         notesInfo.setBaseKyleUseASC(true);
-        List<NotesInfo> list = mapper.baseSelectByCondition(notesInfo);
+        List<NotesInfo> list = mapper.baseSelectList(notesInfo);
         return ResultData.success(list);
     }
 

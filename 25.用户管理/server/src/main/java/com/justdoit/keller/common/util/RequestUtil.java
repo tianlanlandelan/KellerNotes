@@ -3,6 +3,7 @@ package com.justdoit.keller.common.util;
 import com.alibaba.fastjson.JSONObject;
 import com.justdoit.keller.common.config.PublicConstant;
 import com.justdoit.keller.common.config.RequestConfig;
+import com.justdoit.keller.entity.UserInfo;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
@@ -134,21 +135,35 @@ public class RequestUtil {
      */
     private static String getUrl(Map<String,Object> params,HttpServletRequest request){
         //从 JWT 中解析出 UserId
-        Integer userId = JwtUtils.getUserIdFromLogin(request.getHeader(RequestConfig.TOKEN));
+        UserInfo user= JwtUtils.getUserFromLogin(request.getHeader(RequestConfig.TOKEN));
         HashMap<String,String> headers = getHeader(request);
         StringBuilder builder = new StringBuilder();
 
         builder.append(PublicConstant.serviceUrl).append("/")
                 .append(headers.get(RequestConfig.METHOD));
         builder.append("?");
+
+        if(user.getType() == null){
+            return null;
+        }
+
+        if(user.getType() == PublicConstant.DEFAULT_USER_TYPE){
+            builder.append(PublicConstant.USER_ID_KEY);
+        }else if(user.getType() == PublicConstant.ADMIN_USER_TYPE){
+            builder.append(PublicConstant.ADMIN_ID_KEY);
+        }else{
+            return null;
+        }
+
         //请求参数中添加 userId
-        builder.append(PublicConstant.USER_ID_KEY).append("=").append(userId).append("&");
+        builder.append("=").append(user.getId()).append("&");
         if(params == null){
             return builder.toString();
         }
         for(String key :params.keySet()){
             //过滤掉请求中的 userId
-            if(PublicConstant.USER_ID_KEY.equals(key)){
+            if(PublicConstant.USER_ID_KEY.equals(key)
+                    || PublicConstant.ADMIN_ID_KEY.equals(key)){
                 continue;
             }
             builder.append(key)

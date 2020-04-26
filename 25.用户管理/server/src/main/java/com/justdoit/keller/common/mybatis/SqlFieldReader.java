@@ -57,14 +57,14 @@ public class SqlFieldReader {
         StringBuilder allFields = new StringBuilder();
         for(Field field:fields){
             allFields.append(field.getName()).append(",");
-            if(field.getAnnotation(FieldAttribute.class) != null){
-                FieldAttribute fieldAttribute = field.getAnnotation(FieldAttribute.class);
+            FieldAttribute fieldAttribute = field.getAnnotation(FieldAttribute.class);
+            if(fieldAttribute != null){
                 //如果查询明细字段，返回明细字段
                 if(entity.isBaseKyleDetailed()){
                     builder.append(field.getName()).append(",");
                 //如果不查询明细字段，不返回明细字段
                 }else {
-                    if(!fieldAttribute.detailed()){
+                    if(!fieldAttribute.isDetailed()){
                         builder.append(field.getName()).append(",");
                     }
                 }
@@ -82,12 +82,17 @@ public class SqlFieldReader {
 
     /**
      * 根据索引字段生成查询条件
-     * 传入的对象中带@IndexAttribute注解的字段有值的都作为查询条件
+     * 传入的对象中@FieldAttribute注解中 isCondition = true 的字段有值的都作为查询条件
      * @param entity 实体对象
      * @param <T> 实体类型
      * @return WHERE name = #{name} OR controllerName = #{controllerName}
      */
     public static <T extends BaseEntity> String getConditionSuffix(T entity){
+        //如果设置了自定义的查询条件，返回自定义查询条件，不再判断字段值
+        if(entity.getBaseKyleCustomCondition() != null){
+            return " WHERE " + entity.getBaseKyleCustomCondition();
+        }
+
         String condition;
         if(entity.getBaseKyleUseAnd() == null){
             return "";
@@ -98,12 +103,18 @@ public class SqlFieldReader {
             condition = "OR";
         }
         Class cls = entity.getClass();
-        Field[] fields = cls.getDeclaredFields();
-        StringBuilder builder = new StringBuilder();
-        builder.append(" WHERE ");
-        try {
-            for(Field field:fields){
-                if(field.getAnnotation(IndexAttribute.class) != null){
+                Field[] fields = cls.getDeclaredFields();
+                StringBuilder builder = new StringBuilder();
+                builder.append(" WHERE ");
+                try {
+                    FieldAttribute fieldAttribute;
+                    for(Field field:fields){
+                        fieldAttribute = field.getAnnotation(FieldAttribute.class);
+                        if(fieldAttribute == null){
+                            continue;
+                        }
+                //索引字段或设置为查询条件的字段中，有值的都作为查询条件
+                if(fieldAttribute.isIndex() || fieldAttribute.isCondition()){
                     if(SqlFieldReader.hasValue(entity,field.getName())){
                         builder.append(field.getName())
                                 .append(" = #{").append(field.getName()).append("} ")
@@ -123,6 +134,7 @@ public class SqlFieldReader {
         }
         //注意，不要return null
         return "";
+
     }
 
     /**
@@ -295,8 +307,8 @@ public class SqlFieldReader {
                     builder.append(" not null ");
                 }
 
-                if(fieldAttribute.unique()){
-                    builder.append(" unique ");
+                if(fieldAttribute.isUnique()){
+                    builder.append(" isUnique ");
                 }
 
                 //如果有字段说明，添加字段说明
@@ -355,7 +367,8 @@ public class SqlFieldReader {
 
         Field[] fields = entity.getClass().getDeclaredFields();
         for(Field field:fields){
-            if(field.getAnnotation(IndexAttribute.class) != null){
+            FieldAttribute fieldAttribute = field.getAnnotation(FieldAttribute.class);
+            if(fieldAttribute != null && fieldAttribute.isIndex()){
 
                 builder.append("alter table ")
                         .append(tableName)

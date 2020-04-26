@@ -1,6 +1,5 @@
 package com.justdoit.keller.service;
 
-import com.justdoit.keller.common.config.PublicConstant;
 import com.justdoit.keller.common.response.ResultData;
 import com.justdoit.keller.common.util.FileUtils;
 import com.justdoit.keller.entity.NoteInfo;
@@ -39,7 +38,7 @@ public class NoteService {
         }
         NoteInfo noteInfo = new NoteInfo(userId,notesId);
         noteInfo.setBaseKyleUseAnd(true);
-        List<NoteInfo> list = mapper.baseSelectByCondition(noteInfo);
+        List<NoteInfo> list = mapper.baseSelectList(noteInfo);
         return ResultData.success(list);
     }
 

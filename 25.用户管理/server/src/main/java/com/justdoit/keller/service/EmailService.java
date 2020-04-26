@@ -66,7 +66,7 @@ public class EmailService {
         result.setEmail(email);
         result.setBaseKyleUseASC(false);
         result.setBaseKyleUseAnd(true);
-        List<EmailLog> list = mapper.baseSelectByCondition(result);
+        List<EmailLog> list = mapper.baseSelectList(result);
         if(list == null || list.size() <= 0){
             return false;
         }

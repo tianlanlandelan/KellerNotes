@@ -216,16 +216,15 @@
 			 * @param {Object} file
 			 */
 			beforeAvatarUpload(file) {
-				const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
-				const isLt2M = file.size / 1024 / 1024 < 2;
-
-				if (!isJPG) {
-					this.$message.error('上传头像图片只能是 JPG、PNG 格式!');
+				if(!format.checkPortrait(file)){
+					this.$notify.error({
+						title:"头像格式不正确",
+						message:"必须是 JPG 或 PNG 格式，且大小不能超过 2MB !"
+					});
+					this.$message.error('头像格式不正足额上传头像图片只能是 JPG 或 PNG 格式!');
+					return false;
 				}
-				if (!isLt2M) {
-					this.$message.error('上传头像图片大小不能超过 2MB!');
-				}
-				return isJPG && isLt2M;
+				return true;
 			},
 			/**
 			 * 头像上传完成后的回调函数，在此指定img标签中的src

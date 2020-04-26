@@ -16,8 +16,7 @@ public class NotesInfo extends BaseEntity {
     @KeyAttribute(autoIncr = true)
     private Integer id;
 
-    @FieldAttribute("用户Id")
-    @IndexAttribute
+    @FieldAttribute(value = "用户Id",isIndex = true)
     private Integer userId;
 
     @FieldAttribute(value = "笔记本标题",length = 50,notNull = true)

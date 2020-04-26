@@ -3,6 +3,7 @@ package com.justdoit.keller.controller;
 import com.justdoit.keller.common.response.Response;
 import com.justdoit.keller.common.response.ResultData;
 import com.justdoit.keller.common.util.*;
+import com.justdoit.keller.entity.UserInfo;
 import com.justdoit.keller.service.UserCardService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -37,11 +38,11 @@ public class UploadController {
         if(file == null){
             return Response.badRequest();
         }
-        Integer userId = JwtUtils.getUserIdFromLogin(token);
-        if(userId == null){
+        UserInfo user = JwtUtils.getUserFromLogin(token);
+        if(user == null){
             return Response.unauthorized();
         }
-        ResultData resultData = userCardService.setPortrait(file,userId);
+        ResultData resultData = userCardService.setPortrait(file,user.getId());
         return Response.ok(resultData);
     }
 
@@ -51,16 +52,16 @@ public class UploadController {
         if(file == null || noteId == null){
             return Response.badRequest();
         }
-        Integer userId = JwtUtils.getUserIdFromLogin(token);
-        if(userId == null){
+        UserInfo user = JwtUtils.getUserFromLogin(token);
+        if(user == null){
             return Response.unauthorized();
         }
         String fileName = null;
         try {
-            fileName = ImageUtils.saveImg(file,noteId,userId);
+            fileName = ImageUtils.saveImg(file,noteId,user.getId());
         }catch (Exception e){
             e.printStackTrace();
         }
-        return Response.ok(ResultData.success(FileUtils.getImgUrl(fileName,userId)));
+        return Response.ok(ResultData.success(FileUtils.getImgUrl(fileName,user.getId())));
     }
 }

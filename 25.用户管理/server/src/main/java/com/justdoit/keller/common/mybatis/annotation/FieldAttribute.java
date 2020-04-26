@@ -35,11 +35,23 @@ public @interface FieldAttribute {
      * 是否唯一，默认不唯一
      * @return
      */
-    boolean unique() default false;
+    boolean isUnique() default false;
 
     /**
      * 是否是明细字段，如果是明细字段，在查询列表时不显示该字段
      * @return
      */
-    boolean detailed() default false;
+    boolean isDetailed() default false;
+
+    /**
+     * 是否是索引字段，如果是索引字段，在建表时会以该字段创建索引，在查询时，字段有值会作为查询条件使用
+     * @return
+     */
+    boolean isIndex() default false;
+
+    /**
+     * 是否要作为查询条件，如果作为查询条件，该字段若有值，会作为查询条件使用
+     * @return
+     */
+    boolean isCondition() default false;
 }

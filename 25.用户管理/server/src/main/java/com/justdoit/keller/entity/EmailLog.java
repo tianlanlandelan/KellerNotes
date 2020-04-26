@@ -18,14 +18,12 @@ public class EmailLog extends BaseEntity {
     /**
     * 邮件发送类型
     */
-    @FieldAttribute(value = "邮件发送类型,不能为空",notNull = true)
-    @IndexAttribute
+    @FieldAttribute(value = "邮件发送类型,不能为空",notNull = true,isCondition = true)
      private Integer type;
     /**
     * 收件人
     */
-    @FieldAttribute(value = "收件人，不能为空",notNull = true)
-    @IndexAttribute
+    @FieldAttribute(value = "收件人，不能为空",notNull = true,isIndex = true)
      private String email;
     /**
     * 标题

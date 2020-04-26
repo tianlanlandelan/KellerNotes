@@ -89,7 +89,7 @@ public class UserService {
         user.setBaseKyleUseAnd(true);
 
         //查询用户
-        List<UserInfo> list = userMapper.baseSelectByCondition(user);
+        List<UserInfo> list = userMapper.baseSelectList(user);
         if(list == null || list.size() < 1){
             return ResultData.error("该用户尚未注册");
         }
@@ -171,7 +171,7 @@ public class UserService {
 
     public ResultData getAll(){
         UserInfo userInfo = new UserInfo();
-        List<UserInfo> list = userMapper.baseSelectAll(userInfo);
+        List<UserInfo> list = userMapper.baseSelectList(userInfo);
         if(list == null || list.size() < 1){
             return ResultData.error("没有数据");
         }
@@ -189,7 +189,7 @@ public class UserService {
         userInfo.setEmail(email);
         userInfo.setType(type);
         userInfo.setBaseKyleUseAnd(true);
-        List<UserInfo> list = userMapper.baseSelectByCondition(userInfo);
+        List<UserInfo> list = userMapper.baseSelectList(userInfo);
         if(list != null && list.size() > 0){
             return list.get(0);
         }
@@ -212,5 +212,30 @@ public class UserService {
             notesService.insertDefaultNotes(userInfo.getId());
         }
         return userInfo;
+    }
+
+    public ResultData getUserList(int page,int pageSize,String email){
+        UserInfo userInfo = new UserInfo();
+        userInfo.setBaseKyleCurrentPage(page);
+        userInfo.setBaseKylePageSize(pageSize);
+        userInfo.setBaseKyleDetailed(false);
+        //如果传入了email参数，则执行模糊查询
+        if(StringUtils.noEmpty(email)){
+            userInfo.setEmail(email);
+            userInfo.setBaseKyleCustomCondition(UserMapper.whereEmailLike);
+        }
+        List<UserInfo> list = userMapper.baseSelectPageList(userInfo);
+        return ResultData.success(list);
+    }
+
+    public ResultData getUserCounter(String email){
+        UserInfo userInfo = new UserInfo();
+        //如果传入了email参数，则执行模糊查询
+        if(StringUtils.noEmpty(email)){
+            userInfo.setEmail(email);
+            userInfo.setBaseKyleCustomCondition(UserMapper.whereEmailLike);
+        }
+        Integer counter  = userMapper.baseSelectCount(userInfo);
+        return ResultData.success(counter);
     }
 }

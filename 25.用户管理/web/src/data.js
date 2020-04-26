@@ -114,6 +114,13 @@ const format = {
 					return that.padding(date.getSeconds(), $0.length);
 			}
 		});
+	},
+	checkPortrait(file) {
+				const isImg =  file.type === 'image/jpeg' || file.type === 'image/png';
+				const isLt2M = file.size / 1024 / 1024 < 2;
+
+		
+				return isImg && isLt2M;
 	}
 }
 

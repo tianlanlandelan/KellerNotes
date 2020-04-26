@@ -17,12 +17,10 @@ public class NoteInfo extends BaseEntity {
     @KeyAttribute(autoIncr = true)
     private Integer id;
 
-    @FieldAttribute("用户ID")
-    @IndexAttribute
+    @FieldAttribute(value = "用户ID",isIndex = true)
     private Integer userId;
 
-    @FieldAttribute("笔记本ID")
-    @IndexAttribute
+    @FieldAttribute(value = "笔记本ID",isIndex = true)
     private Integer notesId;
 
     @FieldAttribute("笔记类型 0:富文本笔记 1:MarkDown笔记")
@@ -31,10 +29,10 @@ public class NoteInfo extends BaseEntity {
     @FieldAttribute("笔记标题")
     private String title;
 
-    @FieldAttribute(value = "纯文本笔记内容",length = 70000,detailed = true)
+    @FieldAttribute(value = "纯文本笔记内容",length = 70000, isDetailed = true)
     private String text;
 
-    @FieldAttribute(value = "html格式的笔记内容",length = 70000,detailed = true)
+    @FieldAttribute(value = "html格式的笔记内容",length = 70000, isDetailed = true)
     private String html;
 
     @FieldAttribute("排序")
