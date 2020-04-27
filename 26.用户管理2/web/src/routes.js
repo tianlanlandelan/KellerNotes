@@ -44,12 +44,19 @@ let routes = [{
 		component: NotFound,
 		name: 'NotFound'
 	},
-	//后台管理页面
+	{
+		path: '*',
+		redirect: {
+			path: '/Login'
+		}
+	},
+	//后台管理登录页面
 	{
 		path: '/AdminLogin',
 		component: ()=> import("./views/admin/AdminLogin.vue"),
 		name: '管理员登录'
 	},
+	//后台管理页面
 	{
 		path: '/Admin0',
 		component: Admin,
@@ -85,13 +92,7 @@ let routes = [{
 			name: '统计'
 		}],
 		show: true
-	},
-	{
-		path: '*',
-		redirect: {
-			path: '/Login'
-		}
-	},
+	}
 	
 ];
 

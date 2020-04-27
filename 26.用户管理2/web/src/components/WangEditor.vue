@@ -43,6 +43,7 @@
 
 			editor.customConfig.uploadImgHooks = {
 				customInsert: function(insertImg, result, editor) {
+					window.console.log("editor.customConfig.uploadImgHooks",editor);
 					// 图片上传并返回结果，自定义插入图片的事件（而不是编辑器自动插入图片！！！）
 					// insertImg 是插入图片的函数，editor 是编辑器对象，result 是服务器端返回的结果
 					// result 必须是一个 JSON 格式字符串！！！否则报错

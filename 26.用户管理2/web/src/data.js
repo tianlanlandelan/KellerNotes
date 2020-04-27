@@ -55,7 +55,8 @@ const editorImgCheck = {
 	 * @param {Object} content
 	 */
 	getMarkDownImg(content) {
-		// 匹配 MarkDown 中的图片 匹配格式：![图片描述](图片地址)
+		/* 匹配 MarkDown 中的图片 匹配格式：![图片描述](图片地址) */
+		// eslint-disable-next-line
 		var pattern = /!\[?([^\)]*)\)?/g;
 		var arr = content.match(pattern);
 		let imgs = []

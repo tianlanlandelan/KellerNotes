@@ -1,6 +1,7 @@
 package com.justdoit.keller;
 
 import com.justdoit.keller.common.config.PublicConstant;
+import com.justdoit.keller.common.util.StringUtils;
 import com.justdoit.keller.entity.*;
 import com.justdoit.keller.mapper.*;
 import org.junit.jupiter.api.Test;
@@ -55,8 +56,8 @@ class KellerApplicationTests {
     @Test
     public void insetUserInfo(){
         UserInfo userInfo = new UserInfo();
-        for(int i = 0 ; i < 20 ; i ++){
-            userInfo.setEmail("test" + i);
+        for(int i = 0 ; i < 900 ; i ++){
+            userInfo.setEmail(StringUtils.getAllCharString(20));
             userInfo.setPassword("test");
             userInfo.setType(PublicConstant.DEFAULT_USER_TYPE);
             userMapper.baseInsertAndReturnKey(userInfo);
