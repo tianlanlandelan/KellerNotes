@@ -294,3 +294,64 @@ export const req_getUserCounter = (email) => {
 		}
 	}).then(res => res.data).catch(err => err);  
 };
+/**
+ * 获取日活用户数量 5008
+ */
+export const req_getLoginLogByDay = (startDate,endDate) => { 
+    return axios.get(api, {
+		params:{
+			startDate:startDate,
+			endDate:endDate
+		},
+		headers:{
+			'method':'admin/loginLogByDay',
+			'token'	: window.sessionStorage.getItem("adminToken")
+		}
+	}).then(res => res.data).catch(err => err);  
+};
+/**
+ * 获取日活用户数量 5009
+ */
+export const req_getLoginLogByMonth = (startDate,endDate) => { 
+    return axios.get(api, {
+		params:{
+			startDate:startDate,
+			endDate:endDate
+		},
+		headers:{
+			'method':'admin/loginLogByMonth',
+			'token'	: window.sessionStorage.getItem("adminToken")
+		}
+	}).then(res => res.data).catch(err => err);  
+};
+
+/**
+ * 获取用户日增长量 5008
+ */
+export const req_getRegisterLogByDay = (startDate,endDate) => { 
+    return axios.get(api, {
+		params:{
+			startDate:startDate,
+			endDate:endDate
+		},
+		headers:{
+			'method':'admin/registerLogByDay',
+			'token'	: window.sessionStorage.getItem("adminToken")
+		}
+	}).then(res => res.data).catch(err => err);  
+};
+/**
+ * 获取用户月增长量 5009
+ */
+export const req_getRegisterLogByMonth = (startDate,endDate) => { 
+    return axios.get(api, {
+		params:{
+			startDate:startDate,
+			endDate:endDate
+		},
+		headers:{
+			'method':'admin/registerLogByMonth',
+			'token'	: window.sessionStorage.getItem("adminToken")
+		}
+	}).then(res => res.data).catch(err => err);  
+};

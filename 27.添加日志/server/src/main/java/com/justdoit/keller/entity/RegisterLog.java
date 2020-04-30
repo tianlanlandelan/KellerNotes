@@ -8,9 +8,8 @@ import com.justdoit.keller.common.mybatis.annotation.TableAttribute;
 
 import java.util.Date;
 
-@TableAttribute(name = "login_log",comment = "登录日志表")
-public class LoginLog extends BaseEntity {
-
+@TableAttribute(name = "register_log",comment = "注册日志表")
+public class RegisterLog extends BaseEntity {
     @KeyAttribute(autoIncr = true)
     @FieldAttribute
     private int id;
@@ -25,11 +24,10 @@ public class LoginLog extends BaseEntity {
     @SortAttribute
     private Date createTime = new Date();
 
-
-    public LoginLog() {
+    public RegisterLog() {
     }
 
-    public LoginLog(Integer userId) {
+    public RegisterLog(Integer userId) {
         this.userId = userId;
     }
 
@@ -65,10 +63,9 @@ public class LoginLog extends BaseEntity {
         this.createTime = createTime;
     }
 
-
     @Override
     public String toString() {
-        return "LoginLog{" +
+        return "RegisterLog{" +
                 "id=" + id +
                 ", userId=" + userId +
                 ", ip='" + ip + '\'' +

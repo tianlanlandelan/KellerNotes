@@ -4,6 +4,7 @@ import com.justdoit.keller.common.config.PublicConstant;
 import com.justdoit.keller.common.config.RequestConfig;
 import com.justdoit.keller.common.response.Response;
 import com.justdoit.keller.common.util.Console;
+import com.justdoit.keller.common.util.RequestUtil;
 import com.justdoit.keller.common.util.StringUtils;
 import com.justdoit.keller.entity.UserInfo;
 import com.justdoit.keller.service.UserService;
@@ -23,6 +24,10 @@ import java.util.Map;
 @RequestMapping("/base")
 @CrossOrigin(origins = "*",allowedHeaders="*", maxAge = 3600)
 public class BaseController {
+
+    @Resource
+    private HttpServletRequest request;
+
     @Resource
     private UserService userService;
 
@@ -76,7 +81,7 @@ public class BaseController {
         userInfo.setPassword(password);
         userInfo.setType(PublicConstant.DEFAULT_USER_TYPE);
 
-        return Response.ok(userService.register(userInfo,code));
+        return Response.ok(userService.register(userInfo,code,RequestUtil.getRealIp(request)));
     }
 
     /**
@@ -99,7 +104,7 @@ public class BaseController {
         }else {
             userType = Integer.parseInt(type);
         }
-        return Response.ok(userService.login(email,password,userType));
+        return Response.ok(userService.login(email,password,userType,RequestUtil.getRealIp(request)));
     }
 
     /**

@@ -1,6 +1,8 @@
 body {font-size: 16px;}
 img {max-width: 1000px;}
 /* 字体大小 */
+.font60 {font-size: 60px;}
+.font48 {font-size: 48px;}
 .font24 {font-size: 24px;}
 .font22 {font-size: 22px;}
 .font20 {font-size: 20px;}

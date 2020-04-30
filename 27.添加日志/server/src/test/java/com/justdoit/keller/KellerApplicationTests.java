@@ -1,6 +1,7 @@
 package com.justdoit.keller;
 
 import com.justdoit.keller.common.config.PublicConstant;
+import com.justdoit.keller.common.mybatis.annotation.TableAttribute;
 import com.justdoit.keller.common.util.StringUtils;
 import com.justdoit.keller.entity.*;
 import com.justdoit.keller.mapper.*;
@@ -50,6 +51,14 @@ class KellerApplicationTests {
     @Test
     public void createNoteTable(){
         noteMapper.baseCreate(new NoteInfo());
+    }
+
+    @Resource
+    private RegisterLogMapper registerLogMapper;
+
+    @Test
+    public void createRegisterLogTable(){
+        registerLogMapper.baseCreate(new RegisterLog());
     }
 
 

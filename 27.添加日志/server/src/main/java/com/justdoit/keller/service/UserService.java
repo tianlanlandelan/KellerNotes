@@ -14,6 +14,10 @@ import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author yangkaile
+ * @date 2020-04-29 08:35:01
+ */
 @Service
 public class UserService {
 
@@ -28,6 +32,12 @@ public class UserService {
 
     @Resource
     private NotesService notesService;
+
+    @Resource
+    private RegisterLogService registerLogService;
+
+    @Resource
+    private LoginLogService loginLogService;
 
     /**
      * 发送邮件验证码
@@ -60,12 +70,14 @@ public class UserService {
      * @param code
      * @return
      */
-    public ResultData register(UserInfo userInfo,String code){
+    public ResultData register(UserInfo userInfo,String code,String ip){
         if(emailService.checkCode(userInfo.getEmail(),code,PublicConstant.REGISTER_TYPE)){
             userInfo = insert(userInfo);
             if(userInfo == null){
                 return ResultData.error("注册失败");
             }
+            // 注册成功后记录注册日志
+            registerLogService.insert(userInfo.getId(),ip);
             //创建用户名片
             userCardMapper.baseInsert(new UserCard(userInfo.getId()));
             // 返回 JWT ，注册成功时返回 JWT,用户可以不用再做一遍登录操作
@@ -81,7 +93,7 @@ public class UserService {
      * @param type
      * @return
      */
-    public ResultData login(String email,String password,int type){
+    public ResultData login(String email,String password,int type,String ip){
         //指定查询条件
         UserInfo user = new UserInfo();
         user.setEmail(email);
@@ -97,6 +109,7 @@ public class UserService {
 
         //校验密码
         if(user.getPassword().equals(password)){
+            loginLogService.insert(user.getId(),ip);
             //返回 JWT
             return ResultData.success(JwtUtils.getJwtForLogin(user));
         }

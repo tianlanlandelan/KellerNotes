@@ -21,20 +21,17 @@
 		</el-row>
 		<!-- 导出数据 -->
 		<el-row class="margin10">
-			<el-col :span="8">
+			<el-col :span="12">
 				<!-- 导出本页数据时，数据已经存在，直接取 list 即可 -->
 				<JsonExcel :data="list" :fields="json_fields" name="用户信息.xls">
 					<el-button type="primary"> 导出本页数据</el-button>
 				</JsonExcel>
 			</el-col>
-			<el-col :span="8">
+			<el-col :span="12">
 				<!-- 导出全部数据时，需要从服务端获取数据，使用 fetch 回调方法指定获取数据的方法，并等待异步请求结束后返回获取到的数据 -->
 				<JsonExcel :fetch="getUserListForDownLoad" :fields="json_fields" name="用户信息.xls" type="xls">
 					<el-button type="primary"> 导出全部数据</el-button>
 				</JsonExcel>
-			</el-col>
-			<el-col :span="8">
-				<el-button type="primary" @click="export2Excel()">使用Export2Excel导出</el-button>
 			</el-col>
 		</el-row>
 		<!--列表-->
@@ -177,21 +174,6 @@
 					}
 				});
 			},
-			formatJson(filterVal, jsonData) {
-				return jsonData.map(v => filterVal.map(j => v[j]));
-			},
-			export2Excel() {
-				require.ensure([], () => {
-					const {
-						export_json_to_excel
-					} = require('@/vendor/Export2Excel');
-					const tHeader = ['用户ID', '注册邮箱', '用户类型', '注册时间'];
-					const filterVal = ['id', 'email', 'type', 'createTime'];
-					const list = this.list;
-					const data = this.formatJson(filterVal, list);
-					export_json_to_excel(tHeader, data, "用户信息表");
-				});
-			}
 		},
 		mounted() {
 			this.initPagination();
