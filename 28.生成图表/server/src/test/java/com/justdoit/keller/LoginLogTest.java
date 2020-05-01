@@ -35,7 +35,7 @@ public class LoginLogTest {
             Console.println("day",day);
 
             log.setCreateTime(new Date(
-                        System.currentTimeMillis() + (day * 24 * 60 * 60 * 1000)
+                        System.currentTimeMillis() - (day * 24 * 60 * 60 * 1000)
                     )
             );
             mapper.baseInsertAndReturnKey(log);

@@ -7,8 +7,6 @@ const config = {
 	}
 }
 
-
-
 /**
  * 对比笔记内容，判断 MarkDown 编辑器中是否删除了图片
  * @param {Object} oldContent
@@ -117,11 +115,11 @@ const format = {
 		});
 	},
 	checkPortrait(file) {
-				const isImg =  file.type === 'image/jpeg' || file.type === 'image/png';
-				const isLt2M = file.size / 1024 / 1024 < 2;
+		const isImg = file.type === 'image/jpeg' || file.type === 'image/png';
+		const isLt2M = file.size / 1024 / 1024 < 2;
 
-		
-				return isImg && isLt2M;
+
+		return isImg && isLt2M;
 	}
 }
 
@@ -149,4 +147,4 @@ export {
 	config,
 	format,
 	editorImgCheck
-}
+	}
