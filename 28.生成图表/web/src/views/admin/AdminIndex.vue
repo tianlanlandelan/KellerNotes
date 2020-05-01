@@ -130,7 +130,7 @@
 							let change = todayCount - yesterDayCount;
 							
 							this.list[0].data[1].content = todayCount;
-							this.list[0].data[2].content = change < 0 ? "- " + change : "+ " + change;
+							this.list[0].data[2].content = change < 0 ? change : "+ " + change;
 						}else{
 							this.list[0].data[1].content = data[0].count;
 						}
