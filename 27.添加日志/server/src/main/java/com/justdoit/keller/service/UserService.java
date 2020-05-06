@@ -109,6 +109,7 @@ public class UserService {
 
         //校验密码
         if(user.getPassword().equals(password)){
+            // 密码校验成功后记录登录日志，并返回用户的 JWT
             loginLogService.insert(user.getId(),ip);
             //返回 JWT
             return ResultData.success(JwtUtils.getJwtForLogin(user));

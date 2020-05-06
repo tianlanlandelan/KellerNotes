@@ -75,7 +75,7 @@
 
 	import ECharts from 'vue-echarts/components/ECharts'
 	import 'echarts/lib/chart/bar'
-	// 引入标题及动效
+	// 引入动效
 	import 'echarts/map/js/world'
 	// custom theme
 	import theme from './theme.json'
@@ -122,6 +122,7 @@
 			 * 获取最近一个月（30） 天的登录数据
 			 */
 			getLoginMonth() {
+				this.bar.title.text = "近30天活跃用户柱状图"
 				this.bar.dataset.dimensions = ["日期","活跃用户数"];
 				this.line.dataset.dimensions = ["日期","新增用户数"];
 				this.scatter.dataset.dimensions = ["日期","新增用户数"];
