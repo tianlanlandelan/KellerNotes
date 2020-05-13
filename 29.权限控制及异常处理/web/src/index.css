@@ -1,0 +1,120 @@
+body {font-size: 16px;}
+img {max-width: 1000px;}
+/* 字体大小 */
+.font60 {font-size: 60px;}
+.font48 {font-size: 48px;}
+.font24 {font-size: 24px;}
+.font22 {font-size: 22px;}
+.font20 {font-size: 20px;}
+.font18 {font-size: 18px;}
+.font16 {font-size: 16px;}
+.font14 {font-size: 14px;}
+.font12 {font-size: 12px;}
+/* 字体颜色 */
+.ColorDanger {color: #F56C6C;}
+.ColorSuccess {color: #67C23A;}
+.ColorPrimary {color: #409EFF;}
+.ColorInfo {color: #909399;}
+.ColorMain {color: #303133}
+.ColorCommon {color: #606266;}
+.ColorWhite{color:white}
+/* 字体样式 */
+.font-bold {font-weight: bold;}
+.font-underline {text-decoration: underline;}
+
+
+/* 布局方式 */
+.verticalRl {writing-mode: vertical-lr;}/* 文字垂直排列，多行文字从右向左排列 */
+.verticalLr {writing-mode: vertical-lr;}/* 文字垂直排列，多行文字从左向右排列 */
+
+.alignCenter {text-align: center;}
+.alignRight {text-align: right;}
+.floatLeft {float: left;}
+
+/* 边距 */
+.margin5 {margin: 5px;}
+.margin10 {margin: 10px;}
+.margin15 {margin: 15px;}
+.margin20 {margin: 20px;}
+.margin5-0 {margin: 5px 0;}
+.margin10-0 {margin: 10px 0;}
+.margin0-10 {margin: 0 10px;}
+.marginTop20 {margin-top: 20px;}
+.marginBottom10 {margin-bottom: 10px;}
+.marginBottom20 {margin-bottom: 20px;}
+.padding5 {padding: 5px;}
+.padding10 {padding: 10px;}
+.padding15 {padding: 15px;}
+.padding20 {padding: 20px;}
+.padding0-5 {padding: 0 5px;}
+.padding10-0 {padding: 10px 0;}
+/* 鼠标指针样式 */
+.cursorPointer {cursor: pointer;}
+.width80 {width: 80%;}
+.width100 {width: 100%;}
+.width50 {width: 50%;}
+
+/* 遮罩层 */
+.box {
+	width: 100%;
+	height: 100%;
+	background-color: #000000;
+	opacity: 0.4;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+/* 遮罩层里的内容 */
+.boxCenter {
+	position: absolute;
+	top:20%;
+	left: 20%;
+	width: 60%;
+	background-color: #FFFFFF;
+	opacity: 1;
+	border-radius: 10px;
+	padding: 20px;
+	min-height: 100px;
+	z-index: 999;
+}
+
+.boxLittle {
+	position: absolute;
+	top:20%;
+	left: 30%;
+	width: 40%;
+	background-color: #FFFFFF;
+	opacity: 1;
+	border-radius: 10px;
+	padding: 20px;
+	min-height: 100px;
+	z-index: 999;
+}
+
+.border-2-info {
+	border-bottom: 2px solid #909399;
+}
+.border-three {
+	border-bottom: 1px solid #EBEEF5;
+}
+
+/**
+ * 小页面布局,适用于:登录/注册/找回密码等只有简单表单的页面
+ */
+.little-container {
+	border-radius: 5px;
+	background-clip: padding-box;
+	margin: 180px auto;
+	width: 500px;
+	padding: 35px 35px 15px 35px;
+	background: #fff;
+	border: 1px solid #eaeaea;
+	box-shadow: 0 0 25px #cac6c6;
+}
+
+/* 小头像 */
+.smallAvatar{
+	height: 40px;
+	border-radius: 20px;
+}

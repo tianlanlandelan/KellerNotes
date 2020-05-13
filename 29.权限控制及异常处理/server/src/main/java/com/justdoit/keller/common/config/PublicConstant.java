@@ -188,24 +188,6 @@ public class PublicConstant {
      */
     public static final String ADMIN_ID_KEY = "kellerAdminId";
 
-    /**
-     * 通用，不做访问权限设置
-     */
-    public static final int AUTHORITY_COMMON = 1 << 0;
 
-    /**
-     * 用户登录后可以访问
-     */
-    public static final int AUTHORITY_LOGON  = 1 << 1;
-
-    /**
-     * 管理员可以访问
-     */
-    public static final int AUTHORITY_ADMIN   = 1 << 2;
-
-    /**
-     * 超级管理员可以访问
-     */
-    public static final int AUTHORITY_SUPPER_ADMIN = 1 << 3;
 
 }

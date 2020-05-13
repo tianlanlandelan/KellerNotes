@@ -71,6 +71,16 @@ class KellerApplicationTests {
         loginLogMapper.baseCreate(new LoginLog());
     }
 
+
+    @Resource
+    private ErrorLogMapper errorLogMapper;
+
+    @Test
+    public void createErrorLogTable(){
+        errorLogMapper.baseCreate(new ErrorLog());
+    }
+
+
     @Test
     public void insetUserInfo(){
         UserInfo userInfo = new UserInfo();
