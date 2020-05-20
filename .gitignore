@@ -3,6 +3,7 @@
 *mvnw
 *.cmd
 *.mvn
-*.DS_Store
+.DS_Store
 application-prod.properties
 *.properties
+*.idea
