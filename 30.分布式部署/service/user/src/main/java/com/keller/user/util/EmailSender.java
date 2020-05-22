@@ -1,4 +1,4 @@
-package com.keller.user;
+package com.keller.user.util;
 
 import com.alibaba.fastjson.JSON;
 import com.keller.common.config.Constants;
@@ -120,7 +120,13 @@ public class EmailSender {
     }
 
 
-
+    /**
+     * 发送简单邮件
+     * @param to    接收人
+     * @param title 标题
+     * @param content   内容
+     * @return
+     */
     public  boolean sendSimpleMail(String to,String title,String content) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         // 邮件发送来源

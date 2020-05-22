@@ -69,9 +69,7 @@ public class NotesService {
         List<NotesInfo> list = mapper.baseSelectList(notesInfo);
 
         if(list == null || list.size() < 1){
-            notesInfo.setStatus(Constants.DEFAULT_NOTES_STATUS);
-            notesInfo.setTitle(Constants.DEFAULT_NOTES_NAME);
-            mapper.baseInsertAndReturnKey(notesInfo);
+            notesInfo = insertDefaultNotes(userId);
             list.add(notesInfo);
         }
         return ResultData.success(list);

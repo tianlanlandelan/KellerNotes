@@ -135,21 +135,27 @@ public class RequestUtil {
     }
 
     /**
-     * 根据请求参数获取到URL，会解析请求中的 JWT，并将解析出的 UserId 拼接在请求中
+     * 访问普通接口
      * @param request
+     * @param params
      * @return
      */
-
     public static String getUrl(HttpServletRequest request,Map<String,Object> params){
         return getUrl(request, params,false);
     }
 
+    /**
+     * 访问管理员接口（/admin）
+     * @param request
+     * @param params
+     * @return
+     */
     public static String getAdminUrl(HttpServletRequest request,Map<String,Object> params){
         return getUrl(request, params,true);
     }
 
     /**
-     * 没有Token认证的情况下只能访问指定的接口
+     * 访问无需身份认证的接口 (/base)
      * @param request
      * @param params
      * @return

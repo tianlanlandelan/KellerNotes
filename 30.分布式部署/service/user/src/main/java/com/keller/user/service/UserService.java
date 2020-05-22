@@ -5,7 +5,7 @@ import com.keller.common.entity.LoginLog;
 import com.keller.common.http.*;
 import com.keller.common.util.ErrorLogUtils;
 import com.keller.common.util.ObjectUtils;
-import com.keller.user.EmailSender;
+import com.keller.user.util.EmailSender;
 import com.keller.user.entity.UserCard;
 import com.keller.user.entity.UserInfo;
 import com.keller.user.mapper.UserCardMapper;
